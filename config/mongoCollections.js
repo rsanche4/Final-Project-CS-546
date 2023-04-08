@@ -14,3 +14,6 @@ const getCollectionFn = (collection) => {
 };
 
 export const bars = getCollectionFn('bars');
+export const users = getCollectionFn('users');
+export const ratings = getCollectionFn('ratings');
+export const comments = getCollectionFn('comments');
