@@ -17,6 +17,24 @@ router
   // });
 
   router
+  .route('/searchbars')
+  .get(async (req, res) => {
+    try {
+      const r = {
+        "TEST": "INDIVIDUAL BAR PAGE",
+      }
+      res.json(r);
+    } catch (e) {
+      // Something went wrong with the server!
+      res.status(500).send(e);
+    }
+  })
+  .post(async (req, res) => {
+    // Not implemented
+    res.send('POST request to http://localhost:3000/bars/:id');
+  })
+
+  router
   .route('/:id')
   .get(async (req, res) => {
     try {
