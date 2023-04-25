@@ -27,7 +27,7 @@ let exportedMethods = {
             location: location,
             description: description,
             comments: [],
-            ratingsAverate: {
+            ratingsAverage: {
                 overallAvg: 0,
                 crowdednessAvg: 0,
                 cleanlinessAvg: 0,
@@ -71,7 +71,26 @@ let exportedMethods = {
         if(updatedBar.picture){
             updatedBar.picture = helpers.checkString(updatedBar.picture, 'barPicture');
         }
-
+        if(!Array.isArray(updatedBar.comments)){
+            updatedBar.comments = [];
+        }
+        else{
+            updatedBar.comments = helpers.checkStringArray(
+                updatedBar.comments, 'comments'
+            );
+        }
+        if(!updatedBar.ratingsAverage){
+            updatedBar.ratingsAverage = {
+                overallAvg: 0,
+                crowdednessAvg: 0,
+                cleanlinessAvg: 0,
+                priceAvg: 0
+            };
+        }
+        else{
+            updatedBar.ratingsAverage = helpers.ratingsAverage(
+                updatedBar.ratingsAverage, 'ratingsAverage');
+        }
         const barCollection = await bars();
         const updateInfo = await barCollection.findOneAndUpdate(
             {_id: ObjectId(id)},

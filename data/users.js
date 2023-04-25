@@ -36,7 +36,7 @@ let exportedMethods = {
 
         const userCollection = await users();
         const newInsertInfo = await userCollection.insertOne(newUser);
-        if(!newInsertInfo.insertedId) throw 'Insert failed :(';
+        if(!newInsertInfo.insertedId) throw 'new user Insert failed :(';
         return await this.getUserById(newInsertInfo.insertedId.toString());
 
     },
@@ -81,6 +81,12 @@ let exportedMethods = {
                 updatedUser.hashedPassword, 'userHashedPassword'
             );
         }
+        if(!Array.isArray(updatedUser.comments)){
+            updatedUser.comments = [];
+        } else{
+            updatedUser.comments = helpers.checkStringArray(
+                updatedUser.comments, 'comments');
+        }
 
         const userCollection = await users();
         const updateInfo = await userCollection.findOneAndUpdate(
@@ -88,7 +94,7 @@ let exportedMethods = {
             {$set: updatedUser},
             {returnDocument: 'after'}
         );
-        if(updatedInfo.lastErrorObject.n === 0){
+        if(updateInfo.lastErrorObject.n === 0){
             throw [
                 404,
                 `Error: Update failed, could not find user with id ${id}`
