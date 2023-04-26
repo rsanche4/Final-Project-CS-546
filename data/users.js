@@ -3,7 +3,6 @@ const saltRounds = 16;
 import bcrypt from 'bcrypt';
 import * as check from "../helpers.js";
 
-
 export const createUser = async (
   firstName,
   lastName,
