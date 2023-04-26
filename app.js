@@ -18,10 +18,6 @@ app.use('/public', staticDir);
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-const PORT = 3000;
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(session({
     secret : 'secret',
     resave : false,
