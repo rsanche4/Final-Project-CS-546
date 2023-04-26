@@ -1,0 +1,27 @@
+<section>
+    <h1><a href="/">Already have an account? Click here to log-in</a></h1>
+    <h1>Register</h1>
+    <h2>{{error}}</h2>
+    <div id="error"></div>
+    <article>
+        <h2>Fill out the form below!</h2>
+        <form method="POST" action="/register" id="registration-form">
+            <label for="firstName">First Name</label>
+            <input type="text" name="firstNameInput" id="firstNameInput">
+            <label for="lastName">Last Name</label>
+            <input type="text" name="lastNameInput" id="lastNameInput">
+            <label for="email">Email</label>
+            <input type="email" name="emailAddressInput" id="emailAddressInput">
+            <label for="password">Password</label>
+            <input type="password" name="passwordInput" id="passwordInput">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" name="confirmPasswordInput" id="confirmPasswordInput">
+            <label for="role">Role</label>
+            <select name="roleInput" id="roleInput">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+            <button type="Submit">Submit</button>
+        </form>
+    </article>
+</section>
