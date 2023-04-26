@@ -1,0 +1,17 @@
+<p>
+    This application will assist users in exploring the bars of Hoboken! Rate bars by cleanliness, crowdedness, price, etc. and 
+    see which bar is right for you using the crowdsourced insight from other users like you. Have fun!
+</p>
+<section>
+    <h2>Featured Bars</h2>
+    <ol>
+        {{#each featBars}}
+        <li>
+            <a href="/{{id}}">{{barName}}</a>
+            <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
+            <address>Phone: {{barPhone}}</address>
+        </li>
+        {{/each}}
+    </ol>
+    <a href="/searchbars">See more bars</a>
+</section>
