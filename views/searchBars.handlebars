@@ -1,0 +1,18 @@
+
+<form action = "/searchbars" method = "POST">
+    <label for="term">Search:</label>
+    <input type="text" id="term" name= "searchVenueTerm">
+    <button type="submit">go</button>
+</form>
+<section>
+    <h2>All Bars</h2>
+    <ol>
+        {{#each allBars}}
+        <li>
+            <a href="/{{id}}">{{barName}}</a>
+            <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
+            <address>Phone: {{barPhone}}</address>
+        </li>
+        {{/each}}
+    </ol>
+</section>

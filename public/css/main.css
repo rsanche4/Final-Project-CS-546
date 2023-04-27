@@ -1,0 +1,73 @@
+/*This file should have CSS rulesets */
+
+* {
+	box-sizing: border-box;
+}
+
+html,
+body {
+	font-size: 14pt;
+}
+
+body {
+	background: #7860d7;
+	font-family: Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+head {
+	font-style: italic;
+}
+
+main {
+	max-width: 85%;
+	margin: auto;
+}
+
+header {
+	border-bottom: 5px solid #ebf2eb;
+}
+
+h1,
+h2
+ {
+	color: #222;
+	margin-bottom: 5px;
+}
+
+p {
+	background: #ff0909;
+	color: #f7f3f3;
+	text-align: center;
+}
+
+div {
+	border: 5px solid #60d76c;
+}
+
+address {
+	font-size: 10pt;
+}
+
+li {
+	background: #f7f3f3;
+	border: 5px solid #60d76c;
+}
+
+button {
+    font-size: 18pt;
+    transition: all 0.5s ease;
+    border: 1px solid black;
+    border-radius: 8px;
+    padding: 4px 8px;
+    
+}
+
+button:hover {
+    background-color: lightblue;
+    color: black;
+    cursor: pointer;
+}
+
+button:hover {
+    color: rebeccapurple;
+}
