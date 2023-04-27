@@ -3,7 +3,7 @@
     <p>Only logged in users can see this page.</p>
     <p>Welcome {{firstName}}, the time is now: {{currentTime}}. Your role in the system is: {{role}}.</p>
     {{#if isAdmin}}
-        <h1><a href="/admin">Click here to reach the admin page</a></h1>
+        <h1><a href="/auth/admin">Click here to reach the admin page</a></h1>
     {{/if}}
-    <h1><a href="/logout">Click here to logout</a></h1>
+    <h1><a href="/auth/logout">Click here to logout</a></h1>
 </section>

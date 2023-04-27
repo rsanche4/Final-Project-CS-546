@@ -2,20 +2,24 @@
 import {Router} from 'express';
 const router = Router();
 
-router
-  .route('/')
-  .get(async (req, res) => {
-    //need to add bars database as source to put render on the route (see views\homepage.handlebars)
-    res.render('homepage', {title: "Hoboken Bar Review"})
-  })
-  // .post(async (req, res) => {
-  //   // Not implemented
-  //   res.send('POST request to http://localhost:3000/bars/');
-  // })
-  // .delete(async (req, res) => {
-  //   // Not implemented
-  //   res.send('DELETE request to http://localhost:3000/bars/');
-  // });
+router.route('/').get(async (req, res) => {
+  try {
+    res.redirect('/homepage');
+  } catch (e) {
+    res.status(500).json({error: e});
+  }
+
+});
+
+router.route('/homepage').get(async (req, res) => {
+  //code here for GET
+  try {
+    res.render('homepage');
+  } catch (e) {
+    res.status(500).json({error: e});
+  }
+
+});
 
   router
   .route('/searchbars')
