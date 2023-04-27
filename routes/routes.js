@@ -39,6 +39,17 @@ router.route('/homepage').get(async (req, res) => {
     res.send('POST request to http://localhost:3000/bars/:id');
   })
 
+  router.route('/error').get(async (req, res) => {
+    res.status(403).render('error', {
+      message: 'WORKING ON ERROR MESSAGES TO DISPLAY HERE'
+    });
+}).post(async (req, res) => {
+  // Not implemented
+  res.status(403).render('error', {
+    message: 'WORKING ON ERROR MESSAGES TO DISPLAY HERE'
+  });
+});
+
   router
   .route('/:id')
   .get(async (req, res) => {
@@ -60,6 +71,7 @@ router.route('/homepage').get(async (req, res) => {
     // Not implemented
     res.send('DELETE request to http://localhost:3000/bars/:id');
   });
+
 
 
 export default router;

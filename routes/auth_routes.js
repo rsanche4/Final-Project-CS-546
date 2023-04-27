@@ -86,10 +86,6 @@ router.route('/admin').get(async (req, res) => {
   }
 });
 
-router.route('/error').get(async (req, res) => {
-    return res.status(403).render('error');
-});
-
 router.route('/logout').get(async (req, res) => {
   try{
     req.session.destroy();
