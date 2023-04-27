@@ -1,11 +1,11 @@
 <section>
-    <h1><a href="/">Already have an account? Click here to log-in</a></h1>
+    <h1><a href="/auth/">Already have an account? Click here to log-in</a></h1>
     <h1>Register</h1>
     <h2>{{error}}</h2>
     <div id="error"></div>
     <article>
         <h2>Fill out the form below!</h2>
-        <form method="POST" action="/register" id="registration-form">
+        <form method="POST" action="/auth/register" id="registration-form">
             <label for="firstName">First Name</label>
             <input type="text" name="firstNameInput" id="firstNameInput">
             <label for="lastName">Last Name</label>

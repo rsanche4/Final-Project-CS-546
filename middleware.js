@@ -1,27 +1,27 @@
 export const middle1 = async (req, res, next) => {
-    if (req.originalUrl !== "/") {
+    if (req.originalUrl !== "/auth/") {
         return next();
     }
     if (req.session.user) {
         if (req.session.user.role === "admin") {
-            return res.redirect('/admin');
+            return res.redirect('/auth/admin');
         } else {
-            return res.redirect('/protected');
+            return res.redirect('/auth/protected');
         }
     } else {
-        return res.redirect('/login');
+        return res.redirect('/auth/login');
     }
 }
 
 export const middle2 = async (req, res, next) => {
-    if (req.originalUrl !== "/login") {
+    if (req.originalUrl !== "/auth/login") {
         return next();
     }
     if (req.session.user) {
         if (req.session.user.role === "admin") {
-            return res.redirect('/admin');
+            return res.redirect('/auth/admin');
         } else {
-            return res.redirect('/protected');
+            return res.redirect('/auth/protected');
         }
     } else {
         return next();
@@ -29,14 +29,14 @@ export const middle2 = async (req, res, next) => {
 }
 
 export const middle3 = async (req, res, next) => {
-    if (req.originalUrl !== "/register") {
+    if (req.originalUrl !== "/auth/register") {
         return next();
     }
     if (req.session.user) {
         if (req.session.user.role === "admin") {
-            return res.redirect('/admin');
+            return res.redirect('/auth/admin');
         } else {
-            return res.redirect('/protected');
+            return res.redirect('/auth/protected');
         }
     }
     else {
@@ -45,11 +45,11 @@ export const middle3 = async (req, res, next) => {
 }
 
 export const middle4 = async (req, res, next) => {
-    if (req.originalUrl !== "/protected") {
+    if (req.originalUrl !== "/auth/protected") {
         return next();
     }
     if (!req.session.user) {
-        return res.redirect('/login');
+        return res.redirect('/auth/login');
     }
     else {
         return next();
@@ -57,11 +57,11 @@ export const middle4 = async (req, res, next) => {
 }
 
 export const middle5 = async (req, res, next) => {
-    if (req.originalUrl !== "/admin") {
+    if (req.originalUrl !== "/auth/admin") {
         return next();
     }
     if (!req.session.user) {
-        return res.redirect('/login');
+        return res.redirect('/auth/login');
     }
     if (req.session.user.role !== "admin") {
         return res.redirect('/error');
@@ -72,11 +72,11 @@ export const middle5 = async (req, res, next) => {
 }
 
 export const middle6 = async (req, res, next) => {
-    if (req.originalUrl !== "/logout") {
+    if (req.originalUrl !== "/auth/logout") {
         return next();
     }
     if (!req.session.user) {
-        return res.redirect('/login');
+        return res.redirect('/auth/login');
     }
     else {
         return next();
