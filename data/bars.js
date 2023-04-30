@@ -11,7 +11,7 @@ let exportedMethods = {
     async getBarById(id) {
         id = helpers.checkId(id, 'barID');
         const barCollection = await bars();
-        const bar = await barCollection.findOne({_id: ObjectId(id)});
+        const bar = await barCollection.findOne({_id: new ObjectId(id)});
         if(!bar) throw `Error: Bar not found`;
         return bar;
     },

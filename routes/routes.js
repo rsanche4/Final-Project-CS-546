@@ -2,7 +2,8 @@
 // DONT ANY OF YOU DARE TOUCH ANYTHING IN HERE.
 // IF YOU CHANGE ANYTHING LET ME KNOW OR WE GON RUN HANDS CUH ON GOD NO CAP FR 
 import {Router} from 'express';
-//import { barData, userData, ratingData, commentData } from '../data/index.js';
+import { barData, ratingData, commentData } from '../data/index.js';
+
 const router = Router();
 
 router.route('/').get(async (req, res) => {

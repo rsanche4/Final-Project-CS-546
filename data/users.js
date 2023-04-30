@@ -70,6 +70,7 @@ let exportedMethods = {
     },
     //further error checking needed
     async addUser(firstName, lastName, email, username, hashedPassword){
+        
         firstName = helpers.checkString(firstName, 'userFirstName');
         lastName = helpers.checkString(lastName, 'userLastName');
         email = helpers.checkString(email, 'userEmail');
