@@ -96,18 +96,18 @@ let exportedMethods = {
     async removeUser(id){
         id = helpers.checkId(id, 'userID');
         const userCollection = await users();
-        const deleteionInfo = await userCollection.findOneAndDelete({
+        const deletionInfo = await userCollection.findOneAndDelete({
             _id:ObjectId(id)
         });
-        if(deleteionInfo.lastErrorObject.n === 0){
+        if(deletionInfo.lastErrorObject.n === 0){
             throw [404, `Error: Could not delete user with id ${id}`];
         }
 
-        return {...deleteionInfo.value, deleted: true};
+        return {...deletionInfo.value, deleted: true};
     },
 
     async updateUserPatch(id, updatedUser){
-        id = helpers.checkId(id);
+        id = helpers.checkId(id, "userId");
         if(updatedUser.firstName){
             updatedUser.firstName = helpers.checkString(
                 updatedUser.firstName, 'userFirstName'

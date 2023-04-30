@@ -38,18 +38,56 @@ let exportedMethods = {
     async removeRating(id){
         id = helpers.checkId(id, 'ratingId');
         const ratingCollection = await ratings();
-        const deleteionInfo = await ratingCollection.findOneAndDelete({
+        const deletionInfo = await ratingCollection.findOneAndDelete({
             _id:ObjectId(id)
         });
-        if(deleteionInfo.lastErrorObject.n === 0){
+        if(deletionInfo.lastErrorObject.n === 0){
             throw [404, `Error: Could not delete rating with id ${id}`];
         }
 
-        return {...deleteionInfo.value, deleted: true};
+        return {...deletionInfo.value, deleted: true};
     },
     async updateRatingPatch(id, updatedRating){
-        id = helpers.checkId(id);
+        id = helpers.checkId(id, "ratingId");
+        if(updatedRating.barId){
+            updatedRating.barId = helpers.checkId(
+                updatedRating.barId, 'ratingBarId'
+            );
+        }
+        if(updatedRating.overall){
+            updatedRating.overall = helpers.checkOverallRating(
+                updatedRating.overall, "ratingOverallRating"
+            );
+        }
+        if(updatedRating.crowdedness){
+            updatedRating.crowdedness = helpers.checkRating(
+                updatedRating.crowdedness, "ratingCrowdednessRating"
+            );
+        }
+        if(updatedRating.cleanliness){
+            updatedRating.cleanliness = helpers.checkRating(
+                updatedRating.cleanliness, "ratingCleanlinessRating"
+            );
+        }
+        if(updatedRating.price){
+            updatedRating.price = helpers(
+                updatedRating.price, "ratingPriceRating"
+            );
+        }
+
+        const ratingCollection = await ratings();
+        const updateInfo = await ratingCollection.findOneAndUpdate(
+            {_id: ObjectId(id)},
+            {$set: updatedRating},
+            {returnDocument: 'after'}
+        );
+        if(updateInfo.lastErrorObject.n === 0){
+            throw[
+                404, `Error: Update failed, could not find rating with id ${id}`
+            ];
+        }
+        return await updateInfo.value;
     }
-}
+};
 
 export default exportedMethods;
