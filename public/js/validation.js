@@ -130,3 +130,58 @@ if (document.querySelector('#registration-form')) {
 if (document.querySelector('#login-form')) {
     setUpLogin();
 }
+
+let add = document.getElementById('addForm');
+let del = document.getElementById('delete');
+let update = document.getElementById('updateForm');
+let aN = document.getElementById('addName');
+let aI = document.getElementById('addImage');
+let aU = document.getElementById('addUrl');
+let aA = document.getElementById('addAddress');
+let aP = document.getElementById('addPhone');
+let aD = document.getElementById('addDesc');
+let uN = document.getElementById('updateName');
+let uI = document.getElementById('updateImage');
+let uU = document.getElementById('updateUrl');
+let uA = document.getElementById('updateAddress');
+let uP = document.getElementById('updatePhone');
+let uD = document.getElementById('updateDesc')
+
+import * as barFunc from '../../data/bars.js';
+
+if(del) {
+    del.addEventListener('click', (event) => {
+        event.preventDefault();
+        barFunc.removeBar(id);
+        del.click();
+    });
+}
+
+if(add) {
+    add.addEventListener('submit', (event) => {
+        event.preventDefault();
+        barFunc.addBar(aN, aU, aD, aI);
+        add.submit();
+    })
+}
+
+if(update) {
+    add.addEventListener('submit', (event) => {
+        event.preventDefault();
+        let updateBar = {
+            name: uN,
+            location: uA,
+            description: uD,
+            comments: [],
+            ratingsAverage: {
+                overallAvg: 0,
+                crowdednessAvg: 0,
+                cleanlinessAvg: 0,
+                priceAvg: 0
+            },
+            picture: uI
+        }
+        barFunc.updateBarPatch(id, updateBar);
+        update.submit();
+    })
+}

@@ -3,6 +3,13 @@
   <img alt={{name}} src={{image}}>
   <br>
   <a href={{barUrl}}>Bar Website</a>
-  <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
+  <address>Address: {{barAddress}}</address>
   <address>Phone: {{barPhone}}</address>
+  <p>{{description}}</p>
 </div>
+{{#if isAdmin}}
+<button id="delete" onclick="location.href = '/searchbars'">Delete Listing</button>
+<button id="updateButton" onclick="location.href='/updatebar'">Update Listing</button>
+{{/if}}
+
+

@@ -4,6 +4,9 @@
     <input type="text" id="term" name= "searchVenueTerm">
     <button type="submit">go</button>
 </form>
+{{#if isAdmin}}
+<button id="addButton" onclick="location.href='/searchbars'">Add Listing</button>
+{{/if}}
 <section>
     <h2>All Bars</h2>
     <ol>
