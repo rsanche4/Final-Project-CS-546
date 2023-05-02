@@ -168,20 +168,6 @@ if(add) {
 if(update) {
     add.addEventListener('submit', (event) => {
         event.preventDefault();
-        let updateBar = {
-            name: uN,
-            location: uA,
-            description: uD,
-            comments: [],
-            ratingsAverage: {
-                overallAvg: 0,
-                crowdednessAvg: 0,
-                cleanlinessAvg: 0,
-                priceAvg: 0
-            },
-            picture: uI
-        }
-        barFunc.updateBarPatch(id, updateBar);
         update.submit();
     })
 }

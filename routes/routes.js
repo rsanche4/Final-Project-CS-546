@@ -4,6 +4,7 @@
 import {Router} from 'express';
 //import { barData, userData, ratingData, commentData } from '../data/index.js';
 const router = Router();
+import * as barFunc from '../data/bars.js';
 
 router.route('/').get(async (req, res) => {
   try {
@@ -78,6 +79,56 @@ router.route('/homepage').get(async (req, res) => {
     res.send('DELETE request to http://localhost:3000/bars/:id');
   });
 
+  router
+  .route('/update/:id') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, comments, everything
+  .get(async (req, res) => {
+    res.render('updateBar', {title: 'Update Listing'})
+  })
+  .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR COMMENTS, RATINGS ETC
+    // Not implemented
+    let update = req.body;
+    const id = req.params.id;
+
+    try {
+      const {updateName, updateImage, updateUrl, updateAddress, updatePhone, updateDesc} = update;
+      let updated = {
+        name: updateName,
+            location: updateAddress,
+            description: updateDesc,
+            comments: [],
+            ratingsAverage: {
+                overallAvg: 0,
+                crowdednessAvg: 0,
+                cleanlinessAvg: 0,
+                priceAvg: 0
+            },
+            picture: updateUrl
+      }
+
+      const updateBar = await barFunc.updateBarPatch(id, updated);
+    } catch (e) {
+      // Something went wrong with the server!
+      res.status(500).send(e);
+    }
+  });
+
+  router
+  .route('/create') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, comments, everything
+  .get(async (req, res) => {
+    res.render('addBar', {title: 'Add Bar Listing'});
+  })
+  .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR COMMENTS, RATINGS ETC
+    let create = req.body;
+
+    try {
+      const {addName, addImage, addUrl, addAddress, addPhone, addDesc} = create;
+      const newBar = await barFunc(addName, addAddress, addDesc, addImage);
+
+    } catch (e) {
+      // Something went wrong with the server!
+      res.status(500).send(e);
+    }
+  });
 
 
 export default router;
