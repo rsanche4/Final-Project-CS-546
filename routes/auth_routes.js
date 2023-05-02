@@ -5,14 +5,7 @@ import * as check from "../helpers.js";
 
 router.route('/').get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
-  if (req.session.user) {
-    return res.redirect('/protected')
-  }
-  try {
-    res.render()
-  } catch (e) {
-    return res.status(404).json({ message: e });
-  }
+  return res.status(404).json({message: 'You shouldnt be here'})
 });
 
 router
@@ -42,7 +35,7 @@ router
       roleInput = roleInput.toLowerCase();
       const newUser = await createUser(firstNameInput, lastNameInput, emailAddressInput, passwordInput, roleInput);
       if (newUser.insertedUser) {
-        return res.redirect('/login');
+        return res.redirect('/auth/login');
       }
       return res.status(500).json({ error: "Internal Server Error" });
     } catch (e) {
@@ -60,13 +53,13 @@ router
       const emailAddressInput = check.validEmail(req.body.emailAddressInput);
       const passwordInput = check.validPassword(req.body.passwordInput);
       const user = await checkUser(emailAddressInput, passwordInput);
-      console.log(user);
+      //console.log(user);
       if (user) {
         req.session.user = { firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddress, role: user.role };
         if (user.role === "admin") {
-          return res.redirect('/admin');
+          return res.redirect('/auth/admin');
         } else {
-          return res.redirect('/protected');
+          return res.redirect('/auth/protected');
         }
       }
       if (!user) {
@@ -86,15 +79,11 @@ router.route('/protected').get(async (req, res) => {
 });
 
 router.route('/admin').get(async (req, res) => {
-  try{
+  try{ // RAFAEL SANCHEZ WILL TAKE CARE OF ADDING ADMIN FUNCTIONALITY TO THIS PART. THE ADMIN IS ALLOWED TO UPDATE BARS, ETC SO I WILL TAKE CARE OF EXPANDING THIS ROUTE
     return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString()});
   } catch (e) {
     return res.status(500).json({ message: e });
   }
-});
-
-router.route('/error').get(async (req, res) => {
-    return res.status(403).render('error');
 });
 
 router.route('/logout').get(async (req, res) => {

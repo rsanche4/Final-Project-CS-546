@@ -1,8 +1,15 @@
 <div>
   <h2>{{name}}</h2>
-  <img alt={{name}} src={{image}}>
+  <img class="bigger_images" alt={{name}} src={{picture}}>
   <br>
-  <a href={{barUrl}}>Bar Website</a>
-  <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
-  <address>Phone: {{barPhone}}</address>
+<h4>Overall: {{ratingsAverage.overallAvg}} <br> Crowdedness: {{ratingsAverage.crowdednessAvg}} <br> Cleanliness: {{ratingsAverage.cleanlinessAvg}} <br> Price: {{ratingsAverage.priceAvg}} <br> </h4>
+<address>Address: {{location}}</address>
+<p>{{description}}</p>
+  {{#each commentsBar}}
+                <li>
+                    <h5>{{firstname}} {{lastname}} <br> {{time}}</h5>
+                    <p>{{content}}</p>
+                </li>
+            
+      {{/each}}
 </div>

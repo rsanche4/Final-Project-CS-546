@@ -1,5 +1,7 @@
 import {ObjectId} from 'mongodb';
 
+
+
 export const validString = function validString(string) {
     //string is not empty
     if (!string) {
@@ -124,7 +126,10 @@ const exportedMethods = {
         if(typeof rating != 'number') throw `Error: ${varName} must be of type number`;
         if(rating < 1 || rating > 10) throw `Error: ${varName} must be between 1 and 10`;
         return rating;
-    }
+    },
+    compare_relevance_score( a, b ) {
+        return b-a;
+      }
     
 };
 

@@ -27,11 +27,11 @@ app.use(session({
 }));
 
 app.use("/", middle1);
-app.use("/login", middle2);
-app.use("/register", middle3);
-app.use("/protected", middle4);
-app.use("/admin", middle5);
-app.use("/logout", middle6);
+app.use("/auth/login", middle2);
+app.use("/auth/register", middle3);
+app.use("/auth/protected", middle4);
+app.use("/auth/admin", middle5);
+app.use("/auth/logout", middle6);
 app.use(middle7);
 
 //public
