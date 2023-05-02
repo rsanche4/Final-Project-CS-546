@@ -7,9 +7,9 @@
     <ol>
         {{#each featBars}}
         <li>
-            <a href="/{{id}}">{{barName}}</a>
-            <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
-            <address>Phone: {{barPhone}}</address>
+            <img class="homepage-bars-pictures" src="{{picture}}">
+            <a href="/searchbars/{{_id}}">{{name}}</a>
+            <address>Address: {{location}}</address>
         </li>
         {{/each}}
     </ol>

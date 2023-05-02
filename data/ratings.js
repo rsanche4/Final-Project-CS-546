@@ -5,7 +5,7 @@ import helpers from '../helpers.js';
 let exportedMethods = {
     async getAllRatings(){
         const ratingCollection = await ratings();
-        const ratingList = await ratingCollection.find([]).toArray();
+        const ratingList = await ratingCollection.find({}).toArray();
         return ratingList;
     },
     async getRatingById(id){
