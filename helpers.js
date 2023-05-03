@@ -128,8 +128,15 @@ const exportedMethods = {
         return rating;
     },
     compare_relevance_score( a, b ) {
-        return b-a;
-      }
+        return b.relevance_score-a.relevance_score;
+      },
+    average(arr) {
+        let acc = 0
+        arr.forEach(element => {
+            acc = acc + element
+        });
+        return acc/arr.length
+    }
     
 };
 

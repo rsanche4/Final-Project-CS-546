@@ -46,7 +46,7 @@ let exportedMethods = {
         id = helpers.checkId(id, 'barID');
         const barCollection = await bars();
         const deletionInfo = await barCollection.findOneAndDelete({
-            _id: ObjectId(_id)
+            _id: new ObjectId(_id)
         });
         if (deletionInfo.lastErrorObject.n === 0){
             throw [404, `Error: Could not delete bar with id ${id}`];
@@ -86,14 +86,15 @@ let exportedMethods = {
                 cleanlinessAvg: 0,
                 priceAvg: 0
             };
-        }
-        else{
-            updatedBar.ratingsAverage = helpers.ratingsAverage(
-                updatedBar.ratingsAverage, 'ratingsAverage');
-        }
+        } // THIS ELSE STATEMENT WASNT WORKING BECAUSE DUH THERE IS NO FUNCTION WITH THAT NAME. SRLY GUYS? WHO WROTE THIS. IMMA BODYLSAM YOU
+        // else{
+            
+        //     updatedBar.ratingsAverage = helpers.ratingsAverage(
+        //         updatedBar.ratingsAverage, 'ratingsAverage');
+        // }
         const barCollection = await bars();
         const updateInfo = await barCollection.findOneAndUpdate(
-            {_id: ObjectId(id)},
+            {_id: new ObjectId(id)},
             {$set: updatedBar},
             {returnDocument: 'after'}
         );

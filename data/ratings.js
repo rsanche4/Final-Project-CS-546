@@ -11,7 +11,7 @@ let exportedMethods = {
     async getRatingById(id){
         id = helpers.checkId(id, 'ratingsId');
         const ratingCollection = await ratings();
-        const rating = await ratingCollection.findOne({_id: ObjectId(id)});
+        const rating = await ratingCollection.findOne({_id: new ObjectId(id)});
         if(!rating) throw 'Error: rating not found';
         return rating;
     },
@@ -20,7 +20,7 @@ let exportedMethods = {
         overall = helpers.checkOverallRating(overall, 'overallRating');
         crowdedness = helpers.checkRating(crowdedness, 'crowdednessRating');
         cleanliness = helpers.checkRating(cleanliness,'cleanlinessRating');
-        price = helpers.checkPrice(price, 'priceRating');
+        price = helpers.checkRating(price, 'priceRating');
         
         let newRating = {
             barId: barId,
@@ -31,7 +31,7 @@ let exportedMethods = {
         };
 
         const ratingCollection = await ratings();
-        const newInsertInfo = await ratingCollection.newInsertOne(newRating);
+        const newInsertInfo = await ratingCollection.insertOne(newRating);
         if(!newInsertInfo.insertedId) throw 'new rating insert failed :(';
         return await this.getRatingById(newInsertInfo.insertedId.toString());
     },

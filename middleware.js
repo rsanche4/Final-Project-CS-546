@@ -87,3 +87,14 @@ export const middle7 = async (req, res, next) => {
     console.log(`[${new Date().toUTCString()}]: ${req.method} ${req.originalUrl} (${req.session.user ? "Authenticated User" : "Non-Authenticated User"})`);
     return next();
 }
+
+export const middle8 = async (req, res, next) => {
+    if (req.originalUrl !== "/searchbars/:id") {
+        return next();
+    }
+    if (!req.session.user && req.method==='POST') {
+        return res.redirect('/error');
+    } else {
+        return next()
+    }
+}

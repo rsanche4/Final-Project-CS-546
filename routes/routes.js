@@ -48,8 +48,8 @@ router.route('/homepage').get(async (req, res) => {
 
     });
 
-    featured_bars.sort( helpers.compare_relevance_score );
-
+    featured_bars = featured_bars.sort( helpers.compare_relevance_score );
+  
     featured_bars = featured_bars.slice(0, 20)
 
     res.render('homepage', {
@@ -126,31 +126,79 @@ router.route('/homepage').get(async (req, res) => {
 
   router.route('/error').get(async (req, res) => { // regular error. not much new here
     res.status(403).render('error', {
-      message: 'WORKING ON ERROR MESSAGES TO DISPLAY HERE'
+      message: 'You have to be logged in to submit ratings info...'
     });
 }).post(async (req, res) => {
   // Not implemented
   res.status(403).render('error', {
-    message: 'WORKING ON ERROR MESSAGES TO DISPLAY HERE'
+    message: 'ERROR 403'
   });
 });
 
   router
-  .route('/searchbars/:id') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, comments, everything
+  .route('/searchbars/:id') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, everything. Except comments. Comments are being handled by Kristy so comments are currently not displayed.
   .get(async (req, res) => {
     try {
-      const r = {
-        "TEST": "INDIVIDUAL BAR PAGE",
-      }
-      res.json(r);
+        let bar = await barData.getBarById(req.params.id)
+
+      res.render('barpage', {
+          id: req.params.id,
+          name: bar.name,
+          picture: bar.picture,
+          ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
+          ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
+          ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
+          ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
+          location: bar.location,
+          description: bar.description      
+        });
+
     } catch (e) {
       // Something went wrong with the server!
       res.status(500).send(e);
     }
   })
-  .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR COMMENTS, RATINGS ETC
-    // Not implemented
-    res.send('POST request to http://localhost:3000/bars/:id');
+  .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR RATINGS. (comments are submitted using Ajax. Currently not implemented as Kristy will implement that)
+      try {
+        if (req.session.user) {
+            let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg))
+
+            let bar = await barData.getBarById(req.params.id)
+
+            let allRatings = await ratingData.getAllRatings()
+
+            let overall_arr = []
+            let crowd_arr = []
+            let clean_arr = []
+            let price_arr = []
+
+            allRatings.forEach(rating => {
+                if (rating.barId.toString()===req.params.id) {
+                  overall_arr.push(rating.overall)
+                  crowd_arr.push(rating.crowdedness)
+                  clean_arr.push(rating.cleanliness)
+                  price_arr.push(rating.price)
+                }
+            });
+
+            bar.ratingsAverage.overallAvg = helpers.average(overall_arr)
+            bar.ratingsAverage.crowdednessAvg = helpers.average(crowd_arr)
+            bar.ratingsAverage.cleanlinessAvg = helpers.average(clean_arr)
+            bar.ratingsAverage.priceAvg = helpers.average(price_arr)
+
+            let updated_bar = await barData.updateBarPatch(req.params.id, bar)
+
+            res.redirect('/searchbars/'+req.params.id)
+          } else {
+          return res.redirect('/error');
+        }
+
+      } catch (e) {
+        res.status(403).render('error', {
+          message: e
+        });
+      }
+    
   })
   .delete(async (req, res) => {
     // Not implemented
