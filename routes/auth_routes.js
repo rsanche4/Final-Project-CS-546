@@ -71,16 +71,26 @@ router
   });
 
 router.route('/protected').get(async (req, res) => {
-  try {
-    return res.render('protected', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString(), isAdmin: req.session.user.role === "admin" });
+
+  try{
+
+    let admin = false
+        if (req.session.user && req.session.user.role === "admin") {
+          admin = true
+        }
+
+    return res.render('protected', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString(), isAdmin: admin});
+
   } catch (e) {
     return res.status(404).json({ message: e });
   }
 });
 
 router.route('/admin').get(async (req, res) => {
-  try { // RAFAEL SANCHEZ WILL TAKE CARE OF ADDING ADMIN FUNCTIONALITY TO THIS PART. THE ADMIN IS ALLOWED TO UPDATE BARS, ETC SO I WILL TAKE CARE OF EXPANDING THIS ROUTE
-    return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString() });
+
+  try{ // PAWAN DID THIS
+    return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString()});
+
   } catch (e) {
     return res.status(500).json({ message: e });
   }

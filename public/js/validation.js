@@ -130,3 +130,95 @@ if (document.querySelector('#registration-form')) {
 if (document.querySelector('#login-form')) {
     setUpLogin();
 }
+
+let add = document.getElementById('addForm');
+let del = document.getElementById('delete');
+let update = document.getElementById('updateForm');
+let aN = document.getElementById('addName');
+let aI = document.getElementById('addImage');
+let aA = document.getElementById('addAddress');
+let aD = document.getElementById('addDesc');
+let uN = document.getElementById('updateName');
+let uI = document.getElementById('updateImage');
+let uA = document.getElementById('updateAddress');
+let uD = document.getElementById('updateDesc')
+
+import * as barFunc from '../../data/bars.js';
+
+if(del) {
+    del.addEventListener('click', (event) => {
+        event.preventDefault();
+        barFunc.removeBar(id);
+        del.click();
+    });
+}
+
+if(add) {
+    add.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const errors = [];
+        try {
+            validString(aN);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Name"));
+        }
+        try {
+            validString(aI);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Image"));
+        }
+        try {
+            validString(aA);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Location"));
+        }
+        try {
+            validString(aD);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Description"));
+        }
+        if (errors.length) {
+            e.preventDefault();
+            const errorDiv = document.querySelector('#error');
+            errorDiv.innerText = errors.join(', ');
+        }
+        add.submit();
+    })
+}
+
+if(update) {
+    add.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const errors = [];
+        try {
+            validString(uN);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Name"));
+        }
+        try {
+            validString(uI);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Image"));
+        }
+        try {
+            validString(uA);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Location"));
+        }
+        try {
+            validString(uD);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Description"));
+        }
+        if (errors.length) {
+            e.preventDefault();
+            const errorDiv = document.querySelector('#error');
+            errorDiv.innerText = errors.join(', ');
+        }
+        update.submit();
+    })
+}

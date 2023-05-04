@@ -51,6 +51,7 @@
       <option value="5">5</option>
     </select>
 
+
     <button type="Submit">Submit</button>
   </form>
   <div id="comment-mount"></div>
@@ -59,5 +60,20 @@
     <label for="comment">Comment:</label>
     <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
     <button type="submit">Submit</button>
-</div>
+
 <script src="/public/js/comments.js"></script>
+
+
+</div>
+{{#if isAdmin}}
+
+<form method="POST" action="/delete/{{id}}">
+  <button id="delete" onclick="location.href = '/delete/{{id}}'">Delete Listing</button>
+</form>
+
+<form method="GET" action="/update/{{id}}">
+  <button id="update" onclick="location.href = '/update/{{id}}'">Update Listing</button>
+</form>
+
+{{/if}}
+

@@ -46,7 +46,7 @@ let exportedMethods = {
         id = helpers.checkId(id, 'barID');
         const barCollection = await bars();
         const deletionInfo = await barCollection.findOneAndDelete({
-            _id: new ObjectId(_id)
+        _id: new ObjectId(id)
         });
         if (deletionInfo.lastErrorObject.n === 0){
             throw [404, `Error: Could not delete bar with id ${id}`];
