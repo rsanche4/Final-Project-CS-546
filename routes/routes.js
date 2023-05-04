@@ -5,6 +5,7 @@ import {Router} from 'express';
 //import { barData, userData, ratingData, commentData } from '../data/index.js';
 const router = Router();
 import * as barFunc from '../data/bars.js';
+import helpers from '../helpers.js';
 
 router.route('/').get(async (req, res) => {
   try {

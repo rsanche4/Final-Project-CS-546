@@ -156,7 +156,34 @@ if(del) {
 if(add) {
     add.addEventListener('submit', (event) => {
         event.preventDefault();
-        barFunc.addBar(aN, aU, aD, aI);
+        const errors = [];
+        try {
+            validString(aN);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Name"));
+        }
+        try {
+            validString(aI);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Image"));
+        }
+        try {
+            validString(aA);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Location"));
+        }
+        try {
+            validString(aD);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Description"));
+        }
+        if (errors.length) {
+            e.preventDefault();
+            const errorDiv = document.querySelector('#error');
+            errorDiv.innerText = errors.join(', ');
+        }
         add.submit();
     })
 }
@@ -164,6 +191,34 @@ if(add) {
 if(update) {
     add.addEventListener('submit', (event) => {
         event.preventDefault();
+        const errors = [];
+        try {
+            validString(uN);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Name"));
+        }
+        try {
+            validString(uI);
+        }
+        catch (error) {
+            errors.push(error.message.replace("Argument", "Image"));
+        }
+        try {
+            validString(uA);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Location"));
+        }
+        try {
+            validString(uD);
+        } catch (error) {
+            errors.push(error.message.replace("Argument", "Description"));
+        }
+        if (errors.length) {
+            e.preventDefault();
+            const errorDiv = document.querySelector('#error');
+            errorDiv.innerText = errors.join(', ');
+        }
         update.submit();
     })
 }
