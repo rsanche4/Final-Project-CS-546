@@ -2,75 +2,75 @@ import { users } from "../config/mongoCollections.js";
 const saltRounds = 16;
 import bcrypt from 'bcrypt';
 import * as helpers from "../helpers.js";
-import {ObjectId} from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 export const createUser = async (
-  firstName,
-  lastName,
-  emailAddress,
-  password,
-  role
+    firstName,
+    lastName,
+    emailAddress,
+    password,
+    role
 ) => {
-  firstName = helpers.validString(firstName);
-  lastName = helpers.validString(lastName);
-  emailAddress = helpers.validEmail(emailAddress);
-  password = helpers.validPassword(password);
-  if (['admin', 'user'].indexOf(role.toLowerCase()) < 0) {
-    throw new Error("Role can only be either 'admin' or 'user'.")
-  }
-  role = role.toLowerCase()
-  const userCollection = await users();
-  const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
-  if (emailExists) {
-    throw new Error(`Email: ${emailAddress} already exists.`)
-  }
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  let newUser = {
-    firstName: firstName,
-    lastName: lastName,
-    emailAddress: emailAddress,
-    role: role,
-    hashedPassword: hashedPassword
-  }
-  const insertInfo = await userCollection.insertOne(newUser);
-  if (insertInfo.insertedCount === 0) {
-    throw new Error(`Could not add user`);
-  }
-  return { insertedUser: true }
+    firstName = helpers.validString(firstName);
+    lastName = helpers.validString(lastName);
+    emailAddress = helpers.validEmail(emailAddress);
+    password = helpers.validPassword(password);
+    if (['admin', 'user'].indexOf(role.toLowerCase()) < 0) {
+        throw new Error("Role can only be either 'admin' or 'user'.")
+    }
+    role = role.toLowerCase()
+    const userCollection = await users();
+    const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
+    if (emailExists) {
+        throw new Error(`Email: ${emailAddress} already exists.`)
+    }
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    let newUser = {
+        firstName: firstName,
+        lastName: lastName,
+        emailAddress: emailAddress,
+        role: role,
+        hashedPassword: hashedPassword
+    }
+    const insertInfo = await userCollection.insertOne(newUser);
+    if (insertInfo.insertedCount === 0) {
+        throw new Error(`Could not add user`);
+    }
+    return { insertedUser: true }
 };
 
 export const checkUser = async (emailAddress, password) => {
-  emailAddress = helpers.validEmail(emailAddress);
-  password = helpers.validPassword(password);
-  const userCollection = await users();
-  const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
-  if (!emailExists) {
-    throw new Error("Either the username or password is invalid")
-  }
-  let compare = await bcrypt.compare(password, emailExists.hashedPassword);
-  if (!compare) {
-    throw new Error("Either the username or password is invalid")
-  }
-  return { firstName: emailExists.firstName, lastName: emailExists.lastName, emailAddress, role: emailExists.role }
+    emailAddress = helpers.validEmail(emailAddress);
+    password = helpers.validPassword(password);
+    const userCollection = await users();
+    const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
+    if (!emailExists) {
+        throw new Error("Either the username or password is invalid")
+    }
+    let compare = await bcrypt.compare(password, emailExists.hashedPassword);
+    if (!compare) {
+        throw new Error("Either the username or password is invalid")
+    }
+    return { _id: String(emailExists._id), firstName: emailExists.firstName, lastName: emailExists.lastName, emailAddress, role: emailExists.role }
 };
 
 let exportedMethods = {
-    async getAllUsers(){
+    async getAllUsers() {
         const userCollection = await users();
         const userList = await userCollection.find({}).toArray();
         return userList;
     },
 
-    async getUserById(id){
+    async getUserById(id) {
         id = helpers.checkId(id, 'userID');
         const userCollection = await users();
-        const user = await userCollection.findOne({_id: ObjectId(id)});
-        if(!user) throw 'Error: User not found'; 
+        const user = await userCollection.findOne({ _id: ObjectId(id) });
+        if (!user) throw 'Error: User not found';
         return user;
     },
     //further error checking needed
-    async addUser(firstName, lastName, email, username, hashedPassword){
-        
+    async addUser(firstName, lastName, email, username, hashedPassword) {
+
         firstName = helpers.checkString(firstName, 'userFirstName');
         lastName = helpers.checkString(lastName, 'userLastName');
         email = helpers.checkString(email, 'userEmail');
@@ -89,65 +89,65 @@ let exportedMethods = {
 
         const userCollection = await users();
         const newInsertInfo = await userCollection.insertOne(newUser);
-        if(!newInsertInfo.insertedId) throw 'new user Insert failed :(';
+        if (!newInsertInfo.insertedId) throw 'new user Insert failed :(';
         return await this.getUserById(newInsertInfo.insertedId.toString());
 
     },
 
-    async removeUser(id){
+    async removeUser(id) {
         id = helpers.checkId(id, 'userID');
         const userCollection = await users();
         const deletionInfo = await userCollection.findOneAndDelete({
-            _id:ObjectId(id)
+            _id: ObjectId(id)
         });
-        if(deletionInfo.lastErrorObject.n === 0){
+        if (deletionInfo.lastErrorObject.n === 0) {
             throw [404, `Error: Could not delete user with id ${id}`];
         }
 
-        return {...deletionInfo.value, deleted: true};
+        return { ...deletionInfo.value, deleted: true };
     },
 
-    async updateUserPatch(id, updatedUser){
+    async updateUserPatch(id, updatedUser) {
         id = helpers.checkId(id, "userId");
-        if(updatedUser.firstName){
+        if (updatedUser.firstName) {
             updatedUser.firstName = helpers.checkString(
                 updatedUser.firstName, 'userFirstName'
             );
         }
-        if(updatedUser.lastName){
+        if (updatedUser.lastName) {
             updatedUser.lastName = helpers.checkString(
                 updatedUser.lastName, 'userLastNaame'
             );
         }
-        if(updatedUser.email){
+        if (updatedUser.email) {
             updatedUser.email = helpers.checkString(
                 updatedUser.email, 'userEmail'
             );
         }
-        if(updatedUser.username){
+        if (updatedUser.username) {
             updatedUser.username = helpers.checkString(
                 updatedUser.email, 'userUsername'
             );
         }
-        if(updatedUser.hashedPassword){
+        if (updatedUser.hashedPassword) {
             updatedUser.hashedPassword = helpers.checkString(
                 updatedUser.hashedPassword, 'userHashedPassword'
             );
         }
-        if(!Array.isArray(updatedUser.comments)){
+        if (!Array.isArray(updatedUser.comments)) {
             updatedUser.comments = [];
-        } else{
+        } else {
             updatedUser.comments = helpers.checkStringArray(
                 updatedUser.comments, 'comments');
         }
 
         const userCollection = await users();
         const updateInfo = await userCollection.findOneAndUpdate(
-            {_id: ObjectId(id)},
-            {$set: updatedUser},
-            {returnDocument: 'after'}
+            { _id: ObjectId(id) },
+            { $set: updatedUser },
+            { returnDocument: 'after' }
         );
-        if(updateInfo.lastErrorObject.n === 0){
+        if (updateInfo.lastErrorObject.n === 0) {
             throw [
                 404,
                 `Error: Update failed, could not find user with id ${id}`

@@ -1,10 +1,11 @@
 // THIS DOCUMENT IS BEING ACTIVELY REVIEWED AND UPDATED BY RAFAEL SANCHEZ
 // DONT ANY OF YOU DARE TOUCH ANYTHING IN HERE.
 // IF YOU CHANGE ANYTHING LET ME KNOW OR WE GON RUN HANDS CUH ON GOD NO CAP FR 
-import {Router} from 'express';
+import { Router } from 'express';
 import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
-import { barData, ratingData, commentData } from '../data/index.js';
+import { barData, ratingData } from '../data/index.js';
+import { getCommentsByBarID, addComment } from "../data/comments.js"
 
 const router = Router();
 
@@ -12,7 +13,7 @@ router.route('/').get(async (req, res) => {
   try {
     res.redirect('/homepage');
   } catch (e) {
-    res.status(500).json({error: e});
+    res.status(500).json({ error: e });
   }
 
 });
@@ -26,21 +27,21 @@ router.route('/homepage').get(async (req, res) => {
     let allRatings = await ratingData.getAllRatings() // here we got all the ratings
 
     let featured_bars = []
-    
+
     allBars.forEach(bar => {
-      let avg_score = (bar.ratingsAverage.overallAvg/2 + bar.ratingsAverage.crowdednessAvg + bar.ratingsAverage.cleanlinessAvg + bar.ratingsAverage.priceAvg)/4
-      
+      let avg_score = (bar.ratingsAverage.overallAvg / 2 + bar.ratingsAverage.crowdednessAvg + bar.ratingsAverage.cleanlinessAvg + bar.ratingsAverage.priceAvg) / 4
+
       let number_of_ratings = 0
       allRatings.forEach(rating => { // double check id check todo
-          if (rating.barId.toString() === bar._id.toString()) {
-            number_of_ratings++
-          }
+        if (rating.barId.toString() === bar._id.toString()) {
+          number_of_ratings++
+        }
       });
-      
+
       let p = avg_score
       let q = number_of_ratings
       let Q = 100
-      let relevance_score = 5*p/10 + 5*(1-Math.E-q/Q)
+      let relevance_score = 5 * p / 10 + 5 * (1 - Math.E - q / Q)
       // Source: https://math.stackexchange.com/questions/942738/algorithm-to-calculate-rating-based-on-multiple-reviews-using-both-review-score
 
       bar.relevance_score = relevance_score
@@ -48,29 +49,29 @@ router.route('/homepage').get(async (req, res) => {
 
     });
 
-    featured_bars = featured_bars.sort( helpers.compare_relevance_score );
-  
+    featured_bars = featured_bars.sort(helpers.compare_relevance_score);
+
     featured_bars = featured_bars.slice(0, 20)
 
     res.render('homepage', {
       featBars: featured_bars
     });
   } catch (e) {
-    res.status(500).json({error: e});
+    res.status(500).json({ error: e });
   }
 
 });
 
-  router
+router
   .route('/searchbars') // will be using barData.getAllBars() as well but now you display all the bars. 
   .get(async (req, res) => {
-    try { 
+    try {
       let allBars = await barData.getAllBars()
       res.render('searchBars', {
         allBars: allBars
       });
-      
-      
+
+
     } catch (e) {
       // Something went wrong with the server!
       res.status(500).send(e);
@@ -84,7 +85,7 @@ router.route('/homepage').get(async (req, res) => {
       })
       return
     }
-    if (req.body.searchVenueTerm.trim().length===0) {
+    if (req.body.searchVenueTerm.trim().length === 0) {
       res.status(400).render('error', {
         message: 'Error 400: User did not input any text.',
       })
@@ -92,18 +93,18 @@ router.route('/homepage').get(async (req, res) => {
     }
     try {
       let term = req.body.searchVenueTerm.trim().toLowerCase()
-      
+
       let allBars = await barData.getAllBars()
 
       let found_matching_bars = []
 
       allBars.forEach(bar => {
-          if (bar.name.toLowerCase().includes(term)) {
-            found_matching_bars.push(bar)
-          }
+        if (bar.name.toLowerCase().includes(term)) {
+          found_matching_bars.push(bar)
+        }
       });
 
-      if (found_matching_bars.length>0) {
+      if (found_matching_bars.length > 0) {
         res.render('searchBars', {
           allBars: found_matching_bars,
           NotFoundMessage: ""
@@ -114,7 +115,7 @@ router.route('/homepage').get(async (req, res) => {
           NotFoundMessage: "Could not find any matching bars."
         });
       }
-      
+
 
     } catch (e) {
       console.log(e)
@@ -124,10 +125,10 @@ router.route('/homepage').get(async (req, res) => {
     }
   })
 
-  router.route('/error').get(async (req, res) => { // regular error. not much new here
-    res.status(403).render('error', {
-      message: 'You have to be logged in to submit ratings info...'
-    });
+router.route('/error').get(async (req, res) => { // regular error. not much new here
+  res.status(403).render('error', {
+    message: 'You have to be logged in to submit ratings info...'
+  });
 }).post(async (req, res) => {
   // Not implemented
   res.status(403).render('error', {
@@ -135,23 +136,23 @@ router.route('/homepage').get(async (req, res) => {
   });
 });
 
-  router
+router
   .route('/searchbars/:id') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, everything. Except comments. Comments are being handled by Kristy so comments are currently not displayed.
   .get(async (req, res) => {
     try {
-        let bar = await barData.getBarById(req.params.id)
+      let bar = await barData.getBarById(req.params.id)
 
       res.render('barpage', {
-          id: req.params.id,
-          name: bar.name,
-          picture: bar.picture,
-          ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
-          ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
-          ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
-          ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
-          location: bar.location,
-          description: bar.description      
-        });
+        id: req.params.id,
+        name: bar.name,
+        picture: bar.picture,
+        ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
+        ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
+        ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
+        ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
+        location: bar.location,
+        description: bar.description
+      });
 
     } catch (e) {
       // Something went wrong with the server!
@@ -159,51 +160,96 @@ router.route('/homepage').get(async (req, res) => {
     }
   })
   .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR RATINGS. (comments are submitted using Ajax. Currently not implemented as Kristy will implement that)
-      try {
-        if (req.session.user) {
-            let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg))
+    try {
+      if (req.session.user) {
+        let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg))
 
-            let bar = await barData.getBarById(req.params.id)
+        let bar = await barData.getBarById(req.params.id)
 
-            let allRatings = await ratingData.getAllRatings()
+        let allRatings = await ratingData.getAllRatings()
 
-            let overall_arr = []
-            let crowd_arr = []
-            let clean_arr = []
-            let price_arr = []
+        let overall_arr = []
+        let crowd_arr = []
+        let clean_arr = []
+        let price_arr = []
 
-            allRatings.forEach(rating => {
-                if (rating.barId.toString()===req.params.id) {
-                  overall_arr.push(rating.overall)
-                  crowd_arr.push(rating.crowdedness)
-                  clean_arr.push(rating.cleanliness)
-                  price_arr.push(rating.price)
-                }
-            });
-
-            bar.ratingsAverage.overallAvg = helpers.average(overall_arr)
-            bar.ratingsAverage.crowdednessAvg = helpers.average(crowd_arr)
-            bar.ratingsAverage.cleanlinessAvg = helpers.average(clean_arr)
-            bar.ratingsAverage.priceAvg = helpers.average(price_arr)
-
-            let updated_bar = await barData.updateBarPatch(req.params.id, bar)
-
-            res.redirect('/searchbars/'+req.params.id)
-          } else {
-          return res.redirect('/error');
-        }
-
-      } catch (e) {
-        res.status(403).render('error', {
-          message: e
+        allRatings.forEach(rating => {
+          if (rating.barId.toString() === req.params.id) {
+            overall_arr.push(rating.overall)
+            crowd_arr.push(rating.crowdedness)
+            clean_arr.push(rating.cleanliness)
+            price_arr.push(rating.price)
+          }
         });
+
+        bar.ratingsAverage.overallAvg = helpers.average(overall_arr)
+        bar.ratingsAverage.crowdednessAvg = helpers.average(crowd_arr)
+        bar.ratingsAverage.cleanlinessAvg = helpers.average(clean_arr)
+        bar.ratingsAverage.priceAvg = helpers.average(price_arr)
+
+        let updated_bar = await barData.updateBarPatch(req.params.id, bar)
+
+        res.redirect('/searchbars/' + req.params.id)
+      } else {
+        return res.redirect('/error');
       }
-    
+
+    } catch (e) {
+      res.status(403).render('error', {
+        message: e
+      });
+    }
+
   })
   .delete(async (req, res) => {
     // Not implemented
     res.send('DELETE request to http://localhost:3000/bars/:id');
   });
+
+// JSON api endpoint for getting and posting comments by bar ID
+// can use addComment(barId, userId, time, content) and getCommentsByBarID(barId)
+//   comments in format
+//   let newComment = {
+//     barId:barId,
+//     userId: userId,
+//     time: time,
+//     content: content
+// };
+
+router
+  .route('/comments/:barId')
+  .get(async (req, res) => {
+    try {
+      let comments = await getCommentsByBarID(req.params.barId)
+      res.json(comments)
+    } catch (e) {
+      res.status(500).json({ error: e });
+    }
+  })
+  .post(async (req, res) => {
+    try {
+      if (!req.session.user) {
+        return res.status(403).json({ error: 'You must be logged in to post a comment' });
+      }
+      if (!req.body.content) {
+        return res.status(400).json({ error: 'You must provide content' });
+      }
+      console.log(req.session.user)
+      console.log(req.params.barId, req.body.content)
+      let newComment = {
+        barId: req.params.barId,
+        userId: req.session.user.id,
+        time: new Date(),
+        content: req.body.content
+      }
+      let comment = await addComment(newComment)
+      res.json(comment)
+    } catch (e) {
+      console.error(e)
+      res.status(500).json({ error: e });
+    }
+  });
+
 
 
 
