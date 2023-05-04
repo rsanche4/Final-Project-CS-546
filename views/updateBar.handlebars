@@ -1,16 +1,16 @@
 
-<form action="/searchbars:id" method="GET" id="updateForm">
+<form action="/update/{{id}}" method="POST" id="updateForm">
     <label for="updateName">Input Updated Bar Name</label>
-    <input type="text" placeholder="{{name}}" id="updateName" name="updateName">
+    <input type="text" placeholder="Bar Title" id="updateName" name="updateName" value="{{name}}">
 
     <label for="updateImage">Input Updated Image Url</label>
-    <input type="text" placeholder="{{image}}" id="updateImage" name="updateImage">
+    <input type="text" placeholder="Bar Image Url" id="updateImage" name="updateImage" value="{{image}}">
 
     <label for="updateAddress">Input Updated Bar Address</label>
-    <input type="text" placeholder="{{barAddress}}" id="updateAddress" name="updateAddress">
+    <input type="text" placeholder="Bar Address" id="updateAddress" name="updateAddress" value="{{barAddress}}">
 
     <label for="updateDesc">Input Updated Bar Description</label>
-    <input type="text" placeholder="{{description}}" id="updateDesc" name="updateDesc">
+    <input type="text" placeholder="Description" id="updateDesc" name="updateDesc" value="{{description}}">
 
     <button type="submit">Update Bar Listing</button>
 </form>

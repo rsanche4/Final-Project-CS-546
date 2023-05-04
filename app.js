@@ -4,7 +4,7 @@ const app = express();
 import configRoutesFunction from './routes/index.js';
 
 import session from 'express-session';
-import { middle1, middle2, middle3, middle4, middle5, middle6, middle7} from './middleware.js';
+import { middle1, middle2, middle3, middle4, middle5, middle6, middle7, middle8} from './middleware.js';
 
 import {fileURLToPath} from 'url';
 import {dirname} from 'path';
@@ -33,6 +33,7 @@ app.use("/auth/protected", middle4);
 app.use("/auth/admin", middle5);
 app.use("/auth/logout", middle6);
 app.use(middle7);
+app.use('/searchbars/:id', middle8)
 
 //public
 app.use("/public", express.static('public'));

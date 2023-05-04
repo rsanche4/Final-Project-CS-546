@@ -12,9 +12,13 @@
     <ol>
         {{#each allBars}}
         <li>
-            <a href="/{{id}}">{{barName}}</a>
-            <address>Address: {{barAddress}}</address>
+            <img class="homepage-bars-pictures" src="{{picture}}">
+            <a href="/searchbars/{{_id}}">{{name}}</a>
+            <address>Address: {{location}}</address>
+            <h4>Overall: {{ratingsAverage.overallAvg}} </h4>
+
         </li>
         {{/each}}
+        <h3 class="no_found_match">{{NotFoundMessage}}</h3>
     </ol>
 </section>

@@ -11,7 +11,7 @@ let exportedMethods = {
     async getBarById(id) {
         id = helpers.checkId(id, 'barID');
         const barCollection = await bars();
-        const bar = await barCollection.findOne({_id: ObjectId(id)});
+        const bar = await barCollection.findOne({_id: new ObjectId(id)});
         if(!bar) throw `Error: Bar not found`;
         return bar;
     },
@@ -45,14 +45,14 @@ let exportedMethods = {
     async removeBar(id){
         id = helpers.checkId(id, 'barID');
         const barCollection = await bars();
-        const deleteionInfo = await barCollection.findOneAndDelete({
-            _id: ObjectId(_id)
+        const deletionInfo = await barCollection.findOneAndDelete({
+            _id: new ObjectId(id)
         });
-        if (deleteionInfo.lastErrorObject.n === 0){
-            throw [404, `Error: Could not delete user with id ${id}`];
+        if (deletionInfo.lastErrorObject.n === 0){
+            throw [404, `Error: Could not delete bar with id ${id}`];
         }
 
-        return  {...deleteionInfo.value, deleted: true};
+        return  {...deletionInfo.value, deleted: true};
     },
     //need to error check ratingsAvg and comments
     async updateBarPatch(id, updatedBar){
@@ -86,21 +86,22 @@ let exportedMethods = {
                 cleanlinessAvg: 0,
                 priceAvg: 0
             };
-        }
-        else{
-            updatedBar.ratingsAverage = helpers.ratingsAverage(
-                updatedBar.ratingsAverage, 'ratingsAverage');
-        }
+        } // THIS ELSE STATEMENT WASNT WORKING BECAUSE DUH THERE IS NO FUNCTION WITH THAT NAME. SRLY GUYS? WHO WROTE THIS. IMMA BODYLSAM YOU
+        // else{
+            
+        //     updatedBar.ratingsAverage = helpers.ratingsAverage(
+        //         updatedBar.ratingsAverage, 'ratingsAverage');
+        // }
         const barCollection = await bars();
         const updateInfo = await barCollection.findOneAndUpdate(
-            {_id: ObjectId(id)},
+            {_id: new ObjectId(id)},
             {$set: updatedBar},
             {returnDocument: 'after'}
         );
         if(updateInfo.lastErrorObject.n === 0){
             throw[
                 404,
-                `Error: Update failed, could not find a user with id of ${id}`
+                `Error: Update failed, could not find a bar with id of ${id}`
             ];
         }
         return await updateInfo.value;
