@@ -53,4 +53,16 @@
             <button type="Submit">Submit</button>
         </form>
 
+
 </div>
+{{#if isAdmin}}
+
+<form method="POST" action="/delete/{{id}}">
+  <button id="delete" onclick="location.href = '/delete/{{id}}'">Delete Listing</button>
+</form>
+
+<form method="GET" action="/update/{{id}}">
+  <button id="update" onclick="location.href = '/update/{{id}}'">Update Listing</button>
+</form>
+
+{{/if}}

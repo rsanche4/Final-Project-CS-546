@@ -66,7 +66,13 @@ router.route('/homepage').get(async (req, res) => {
   .get(async (req, res) => {
     try { 
       let allBars = await barData.getAllBars()
+      let admin = false
+        if (req.session.user && req.session.user.role === "admin") {
+          admin = true
+        }
+      
       res.render('searchBars', {
+        isAdmin: admin,
         allBars: allBars
       });
       
@@ -141,6 +147,13 @@ router.route('/homepage').get(async (req, res) => {
     try {
         let bar = await barData.getBarById(req.params.id)
 
+
+        let admin = false
+        if (req.session.user && req.session.user.role === "admin") {
+          admin = true
+        }
+
+
       res.render('barpage', {
           id: req.params.id,
           name: bar.name,
@@ -150,7 +163,9 @@ router.route('/homepage').get(async (req, res) => {
           ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
           ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
           location: bar.location,
-          description: bar.description      
+          description: bar.description,
+          isAdmin: admin
+
         });
 
     } catch (e) {
@@ -205,6 +220,95 @@ router.route('/homepage').get(async (req, res) => {
     res.send('DELETE request to http://localhost:3000/bars/:id');
   });
 
+
+  router
+  .route('/update/:id') 
+  .get(async (req, res) => {
+    let bar = await barData.getBarById(req.params.id)
+    
+    res.render('updateBar', {
+      id: req.params.id,
+      title: 'Update Listing',
+      name: bar.name,
+      image: bar.picture,
+      barAddress: bar.location,
+      description: bar.description
+    })
+  })
+  .post(async (req, res) => {
+    let update = req.body;
+    let id = req.params.id;
+
+
+     try {
+  
+      id = helpers.checkId(id, 'barID');
+      const updateName = helpers.checkString(update.updateName, 'barName');
+      const updateAddress = helpers.checkString(update.updateAddress, 'barLocation');
+      const updateDesc = helpers.checkString(update.updateDesc, 'barDescription');
+      const updateImage = helpers.checkString(update.updateImage, 'barPicture');
+    
+      let updated = {
+        name: updateName,
+            location: updateAddress,
+            description: updateDesc,
+            comments: [],
+            ratingsAverage: {
+                overallAvg: 0,
+                crowdednessAvg: 0,
+                cleanlinessAvg: 0,
+                priceAvg: 0
+            },
+            picture: updateImage
+      }; 
+      const updateBar = await barData.updateBarPatch(id, updated);
+      res.redirect('/searchbars/'+id);
+    } catch (e) {
+      // Something went wrong with the server!
+      console.log(e)
+      res.status(500).send(e);
+    }
+  });
+
+  router
+  .route('/create')
+  .get(async (req, res) => {
+    res.render('addBar', {title: 'Add Bar Listing'});
+  })
+  .post(async (req, res) => { 
+    try {
+    let create = req.body;
+    const addName = helpers.checkString(create.addName, 'barName');
+    const addAddress = helpers.checkString(create.addAddress, 'barLocation');
+    const addDesc = helpers.checkString(create.addDesc, 'barDescription');
+    const addImage = helpers.checkString(create.addImage, 'barPicture');
+
+  
+      const newBar = await barData.addBar(addName, addAddress, addDesc, addImage);
+      res.redirect('/searchbars/'+newBar._id.toString());
+
+    } catch (e) {
+      console.log(e)
+      // Something went wrong with the server!
+      res.status(500).send(e);
+    }
+  });
+
+
+  router
+  .route('/delete/:id')
+  .get(async (req, res) => {
+    console.log("NOT SUPPOSED TO BE HERE")
+    
+  })
+  .post(async (req, res) => { 
+    try {
+      let deleting_bar = await barData.removeBar(req.params.id)
+      res.redirect('/searchbars')
+    } catch (e) {
+      console.log(e)
+    }
+  });
 
 
 export default router;

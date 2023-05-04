@@ -52,7 +52,8 @@ function generate_random_user() {
 // }
 
 // uncomment to fill with users
-for (let i=0; i<n_users; i++) {
-    let user = generate_random_user()
-    await createUser(user.firstName, user.lastName, user.email, user.password, user.role)
-}
+// for (let i=0; i<n_users; i++) {
+//     let user = generate_random_user()
+//     await createUser(user.firstName, user.lastName, user.email, user.password, user.role)
+// }
+
