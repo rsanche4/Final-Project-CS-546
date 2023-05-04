@@ -66,7 +66,6 @@ router.route('/homepage').get(async (req, res) => {
   .get(async (req, res) => {
     try { 
       let allBars = await barData.getAllBars()
-      
       let admin = false
         if (req.session.user && req.session.user.role === "admin") {
           admin = true
@@ -148,10 +147,12 @@ router.route('/homepage').get(async (req, res) => {
     try {
         let bar = await barData.getBarById(req.params.id)
 
+
         let admin = false
         if (req.session.user && req.session.user.role === "admin") {
           admin = true
         }
+
 
       res.render('barpage', {
           id: req.params.id,
@@ -164,6 +165,7 @@ router.route('/homepage').get(async (req, res) => {
           location: bar.location,
           description: bar.description,
           isAdmin: admin
+
         });
 
     } catch (e) {

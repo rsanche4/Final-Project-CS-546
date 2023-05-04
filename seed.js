@@ -56,3 +56,4 @@ function generate_random_user() {
 //     let user = generate_random_user()
 //     await createUser(user.firstName, user.lastName, user.email, user.password, user.role)
 // }
+

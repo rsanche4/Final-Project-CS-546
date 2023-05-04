@@ -71,3 +71,18 @@ button:hover {
 button:hover {
     color: rebeccapurple;
 }
+
+.homepage-bars-pictures {
+	width: 320px;
+	height: 180px;
+	display: inline;
+}
+
+.bigger_images {
+	width: 640px;
+	height: 360px;
+}
+
+.no_found_match {
+	color: #ff0909;
+}
