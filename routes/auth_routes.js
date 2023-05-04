@@ -5,7 +5,7 @@ import * as check from "../helpers.js";
 
 router.route('/').get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
-  return res.status(404).json({message: 'You shouldnt be here'})
+  return res.status(404).json({ message: 'You shouldnt be here' })
 });
 
 router
@@ -55,7 +55,7 @@ router
       const user = await checkUser(emailAddressInput, passwordInput);
       //console.log(user);
       if (user) {
-        req.session.user = { firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddress, role: user.role };
+        req.session.user = { id: user._id, firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddress, role: user.role };
         if (user.role === "admin") {
           return res.redirect('/auth/admin');
         } else {
@@ -71,6 +71,7 @@ router
   });
 
 router.route('/protected').get(async (req, res) => {
+
   try{
 
     let admin = false
@@ -79,24 +80,27 @@ router.route('/protected').get(async (req, res) => {
         }
 
     return res.render('protected', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString(), isAdmin: admin});
+
   } catch (e) {
     return res.status(404).json({ message: e });
   }
 });
 
 router.route('/admin').get(async (req, res) => {
+
   try{ // PAWAN DID THIS
     return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString()});
+
   } catch (e) {
     return res.status(500).json({ message: e });
   }
 });
 
 router.route('/logout').get(async (req, res) => {
-  try{
+  try {
     req.session.destroy();
     return res.render('logout');
-  } catch (e){
+  } catch (e) {
     return res.status(500).json({ message: e });
   }
 });
