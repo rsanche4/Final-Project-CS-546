@@ -88,9 +88,14 @@ router.route('/homepage').get(async (req, res) => {
     // Not implemented
     let update = req.body;
     const id = req.params.id;
+    id = helpers.checkId(id, 'barID');
+    updateName = helpers.checkString(update.updateName, 'barName');
+    updateAddress = helpers.checkString(update.updateAddress, 'barLocation');
+    updateDesc = helpers.checkString(update.updateDesc, 'barDescription');
+    updateImage = helpers.checkString(update.updateImage, 'barPicture');
 
     try {
-      const {updateName, updateImage, updateUrl, updateAddress, updatePhone, updateDesc} = update;
+      const {updateName, updateImage, updateAddress, updateDesc} = update;
       let updated = {
         name: updateName,
             location: updateAddress,
@@ -102,10 +107,11 @@ router.route('/homepage').get(async (req, res) => {
                 cleanlinessAvg: 0,
                 priceAvg: 0
             },
-            picture: updateUrl
+            picture: updateImage
       }
 
       const updateBar = await barFunc.updateBarPatch(id, updated);
+      res.render('/searchbars:id');
     } catch (e) {
       // Something went wrong with the server!
       res.status(500).send(e);
@@ -119,10 +125,15 @@ router.route('/homepage').get(async (req, res) => {
   })
   .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR COMMENTS, RATINGS ETC
     let create = req.body;
+    addName = helpers.checkString(create.addName, 'barName');
+    addAddress = helpers.checkString(create.addAddress, 'barLocation');
+    addDesc = helpers.checkString(create.addDesc, 'barDescription');
+    addImage = helpers.checkString(create.addImage, 'barPicture');
 
     try {
-      const {addName, addImage, addUrl, addAddress, addPhone, addDesc} = create;
+      const {addName, addImage, addAddress, addDesc} = create;
       const newBar = await barFunc(addName, addAddress, addDesc, addImage);
+      res.render('/searchbars');
 
     } catch (e) {
       // Something went wrong with the server!

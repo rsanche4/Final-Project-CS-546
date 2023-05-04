@@ -5,7 +5,7 @@
     <button type="submit">go</button>
 </form>
 {{#if isAdmin}}
-<button id="addButton" onclick="location.href='/searchbars'">Add Listing</button>
+<button id="addButton" onclick="location.href='/create'">Add Listing</button>
 {{/if}}
 <section>
     <h2>All Bars</h2>
@@ -13,8 +13,7 @@
         {{#each allBars}}
         <li>
             <a href="/{{id}}">{{barName}}</a>
-            <address>Address: {{barAddress}}, {{barCity}}, {{barState}} {{barZip}} </address>
-            <address>Phone: {{barPhone}}</address>
+            <address>Address: {{barAddress}}</address>
         </li>
         {{/each}}
     </ol>

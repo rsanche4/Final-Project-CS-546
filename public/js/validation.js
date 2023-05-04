@@ -136,15 +136,11 @@ let del = document.getElementById('delete');
 let update = document.getElementById('updateForm');
 let aN = document.getElementById('addName');
 let aI = document.getElementById('addImage');
-let aU = document.getElementById('addUrl');
 let aA = document.getElementById('addAddress');
-let aP = document.getElementById('addPhone');
 let aD = document.getElementById('addDesc');
 let uN = document.getElementById('updateName');
 let uI = document.getElementById('updateImage');
-let uU = document.getElementById('updateUrl');
 let uA = document.getElementById('updateAddress');
-let uP = document.getElementById('updatePhone');
 let uD = document.getElementById('updateDesc')
 
 import * as barFunc from '../../data/bars.js';
