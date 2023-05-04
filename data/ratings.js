@@ -15,8 +15,9 @@ let exportedMethods = {
         if(!rating) throw 'Error: rating not found';
         return rating;
     },
-    async addRating(barId, overall, crowdedness, cleanliness, price){
+    async addRating(barId, overall, crowdedness, cleanliness, price, userId){
         barId = helpers.checkId(barId, 'barId');
+        userId = helpers.checkId(userId, 'userId');
         overall = helpers.checkOverallRating(overall, 'overallRating');
         crowdedness = helpers.checkRating(crowdedness, 'crowdednessRating');
         cleanliness = helpers.checkRating(cleanliness,'cleanlinessRating');
@@ -24,6 +25,7 @@ let exportedMethods = {
         
         let newRating = {
             barId: barId,
+            userId: userId,
             overall: overall,
             crowdedness: crowdedness,
             cleanliness: cleanliness,
@@ -54,6 +56,11 @@ let exportedMethods = {
                 updatedRating.barId, 'ratingBarId'
             );
         }
+        if(updatedRating.userId){
+            updatedRating.userId = helpers.checkId(
+                updatedRating.userId, 'ratingUserId'
+            );
+        }
         if(updatedRating.overall){
             updatedRating.overall = helpers.checkOverallRating(
                 updatedRating.overall, "ratingOverallRating"
@@ -70,14 +77,14 @@ let exportedMethods = {
             );
         }
         if(updatedRating.price){
-            updatedRating.price = helpers(
+            updatedRating.price = helpers.checkRating(
                 updatedRating.price, "ratingPriceRating"
             );
         }
 
         const ratingCollection = await ratings();
         const updateInfo = await ratingCollection.findOneAndUpdate(
-            {_id: ObjectId(id)},
+            {_id: new ObjectId(id)},
             {$set: updatedRating},
             {returnDocument: 'after'}
         );

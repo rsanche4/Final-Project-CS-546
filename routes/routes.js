@@ -1,6 +1,3 @@
-// THIS DOCUMENT IS BEING ACTIVELY REVIEWED AND UPDATED BY RAFAEL SANCHEZ
-// DONT ANY OF YOU DARE TOUCH ANYTHING IN HERE.
-// IF YOU CHANGE ANYTHING LET ME KNOW OR WE GON RUN HANDS CUH ON GOD NO CAP FR 
 import { Router } from 'express';
 import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
@@ -143,7 +140,7 @@ router.route('/error').get(async (req, res) => { // regular error. not much new 
 });
 
 router
-  .route('/searchbars/:id') // this route displays each bar according to its id, and you will get info on the bar like picture, ratings, everything. Except comments. Comments are being handled by Kristy so comments are currently not displayed.
+  .route('/searchbars/:id') 
   .get(async (req, res) => {
     try {
       let bar = await barData.getBarById(req.params.id)
@@ -154,6 +151,19 @@ router
           admin = true
         }
 
+        let rated_bar_already = false
+        // before adding the rating check if user's id shows up in any ratings with that barid
+        if (req.session.user) {
+          let prevallRatings = await ratingData.getAllRatings()
+          prevallRatings.forEach(rating => {
+            if (rating.barId.toString() === req.params.id) {
+              if (rating.userId.toString()=== req.session.user.id) {
+                rated_bar_already = true
+              }
+            }
+          });
+        }
+       
 
       res.render('barpage', {
 
@@ -166,6 +176,7 @@ router
           ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
           location: bar.location,
           description: bar.description,
+          didRateAlready: rated_bar_already,
           isAdmin: admin
 
         });
@@ -178,8 +189,36 @@ router
   })
   .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR RATINGS. (comments are submitted using Ajax. Currently not implemented as Kristy will implement that)
     try {
+      
       if (req.session.user) {
-        let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg))
+        let rated_bar_already = false
+        // before adding the rating check if user's id shows up in any ratings with that barid
+        let prevallRatings = await ratingData.getAllRatings()
+        let rating_id = ''
+        prevallRatings.forEach(rating => {
+          if (rating.barId.toString() === req.params.id) {
+            if (rating.userId.toString()=== req.session.user.id) {
+              rated_bar_already = true
+              rating_id = rating._id.toString() // Not sure if id is like this actually
+            }
+          }
+        });
+        
+        if (rated_bar_already) {
+          let updated_rating = await ratingData.getRatingById(rating_id)
+          
+          updated_rating.overall = Number(req.body.ratingsAverage_overallAvg)
+          updated_rating.crowdedness = Number(req.body.ratingsAverage_crowdednessAvg)
+          updated_rating.cleanliness = Number(req.body.ratingsAverage_cleanlinessAvg)
+          updated_rating.price = Number(req.body.ratingsAverage_priceAvg)
+          let updating_rating = await ratingData.updateRatingPatch(rating_id, updated_rating)  
+        
+          
+        } else {
+          let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg), req.session.user.id)
+        }
+
+        
 
         let bar = await barData.getBarById(req.params.id)
 

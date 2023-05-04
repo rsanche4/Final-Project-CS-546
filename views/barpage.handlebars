@@ -7,7 +7,13 @@
   <address>Address: {{location}}</address>
   <p>{{description}}</p>
 
-  <p>Been here? Fill out the ratings below for this bar!</p>
+  {{#if didRateAlready}}
+  <p>You already rated the bar. Edit your rating below!</p>
+  
+  {{else}}
+   <p>Been here? Fill out the ratings below for this bar!</p>
+  {{/if}}
+  
   <form method="POST" action="/searchbars/{{id}}">
 
     <label for="ratingsAverage_overallAvg">Overall Rating: </label>
@@ -60,7 +66,7 @@
     <label for="comment">Comment:</label>
     <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
     <button type="submit">Submit</button>
-
+  </form>
 <script src="/public/js/comments.js"></script>
 
 
