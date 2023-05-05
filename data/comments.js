@@ -25,7 +25,9 @@ export async function getCommentById(id) {
     return comment;
 };
 
-export async function addComment({ barId, userId, time, content }) {
+//idk why the curly braces were in the params
+//export async function addComment({ barId, userId, time, content }) {
+export async function addComment( barId, userId, time, content ) {
     barId = helpers.checkId(barId, 'barId');
     userId = helpers.checkId(userId, 'userId');
     //have to do time validation
