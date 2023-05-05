@@ -1,7 +1,8 @@
 import { users } from "../config/mongoCollections.js";
 const saltRounds = 16;
 import bcrypt from 'bcrypt';
-import * as helpers from "../helpers.js";
+//import * as helpers from "../helpers.js";
+import helpers from "../helpers.js";
 import { ObjectId } from 'mongodb';
 
 export const createUser = async (
@@ -64,7 +65,7 @@ let exportedMethods = {
     async getUserById(id) {
         id = helpers.checkId(id, 'userID');
         const userCollection = await users();
-        const user = await userCollection.findOne({ _id: ObjectId(id) });
+        const user = await userCollection.findOne({ _id: new ObjectId(id) });
         if (!user) throw 'Error: User not found';
         return user;
     },
