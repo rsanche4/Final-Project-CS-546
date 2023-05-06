@@ -2,6 +2,7 @@ import { Router } from 'express';
 import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
+
 import { getCommentsByBarID, addComment, updateComment, updateCommentPatch } from "../data/comments.js"
 
 const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
@@ -297,6 +298,7 @@ router
       //if someone already posted a comment, edit comment content
       let comments = await getCommentsByBarID(req.params.barId)
       let userComment = comments.filter(comment => comment.userId === req.session.user.id)
+
       console.log(userComment)
       console.log(req.session.user.id)
       if (userComment.length > 0) {
@@ -306,6 +308,7 @@ router
         return res.json(comment)
       }
       
+
       let newComment = {
         barId: req.params.barId,
         userId: req.session.user.id,

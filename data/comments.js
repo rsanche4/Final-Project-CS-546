@@ -61,11 +61,13 @@ export async function updateComment(id, updatedComment) {
     }
     //time needs more validation
     if (updatedComment.time) {
+
         updatedComment.time = updatedComment.time;
     }
     //content needs more validationd
     if (updatedComment.content) {
         updatedComment.content = updatedComment.content;
+
     }
 
     const commentCollection = await comments();
