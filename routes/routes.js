@@ -4,6 +4,8 @@ import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
 import { getCommentsByBarID, addComment } from "../data/comments.js"
 
+const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
+
 const router = Router();
 
 router.route('/').get(async (req, res) => {
@@ -164,7 +166,7 @@ router
           });
         }
        
-
+      let map = `${bar.name.split(' ').join('+')},Hoboken+NJ`;
       res.render('barpage', {
 
           id: req.params.id,
@@ -177,6 +179,8 @@ router
           location: bar.location,
           description: bar.description,
           didRateAlready: rated_bar_already,
+          apikey: apikey,
+          mapLocation: map,
           isAdmin: admin
 
         });
