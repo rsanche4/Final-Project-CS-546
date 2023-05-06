@@ -10,7 +10,7 @@ body {
 }
 
 body {
-	background: #7860d7;
+	background: lightblue;
 	font-family: Georgia, Cambria, "Times New Roman", Times, serif;
 }
 
@@ -35,13 +35,13 @@ h2
 }
 
 p {
-	background: #ff0909;
-	color: #f7f3f3;
+	background: lightpink;
+	color: black;
 	text-align: center;
 }
 
 div {
-	border: 5px solid #60d76c;
+	border: 5px solid white;
 }
 
 address {
@@ -54,7 +54,7 @@ li {
 }
 
 button {
-    font-size: 18pt;
+    font-size: 16pt;
     transition: all 0.5s ease;
     border: 1px solid black;
     border-radius: 8px;
