@@ -1,6 +1,8 @@
 import {ratings} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import helpers from '../helpers.js';
+import users from './users.js'
+import bars from './bars.js'
 
 let exportedMethods = {
     async getAllRatings(){
@@ -15,6 +17,34 @@ let exportedMethods = {
         if(!rating) throw 'Error: rating not found';
         return rating;
     },
+    async getRatingsByBar(barId){
+        barId= helpers.checkId(barId,'ratingsbarId');
+        const ratingCollection = await ratings();
+        const ratingArray = await ratingCollection
+        .find( {barId:barId})
+        .toArray();
+        if (!ratingArray){
+            throw `Error: ratings with barId '${barId}' not found`;
+        }
+        if(ratingArray.length < 1){
+            throw `Error: ratings with barId '${barId}' not found`;
+        }
+        return ratingArray;
+    },
+    async getRatingsByUser(userId){
+        barId= helpers.checkId(userId,'userId');
+        const ratingCollection = await ratings();
+        const ratingArray = await ratingCollection
+        .find( {userId:userId})
+        .toArray();
+        if (!ratingArray){
+            throw `Error: ratings with barId '${userId}' not found`;
+        }
+        if(ratingArray.length < 1){
+            throw `Error: ratings with barId '${userId}' not found`;
+        }
+        return ratingArray;
+    },
     async addRating(barId, overall, crowdedness, cleanliness, price, userId){
         barId = helpers.checkId(barId, 'barId');
         userId = helpers.checkId(userId, 'userId');
@@ -22,6 +52,10 @@ let exportedMethods = {
         crowdedness = helpers.checkRating(crowdedness, 'crowdednessRating');
         cleanliness = helpers.checkRating(cleanliness,'cleanlinessRating');
         price = helpers.checkRating(price, 'priceRating');
+
+        //const theUser = users.getUserById(userId);
+        const theBar = await bars.getBarById(barId);
+        //const theBarRatings = theBar.ratingsAverage;
         
         let newRating = {
             barId: barId,
@@ -35,7 +69,35 @@ let exportedMethods = {
         const ratingCollection = await ratings();
         const newInsertInfo = await ratingCollection.insertOne(newRating);
         if(!newInsertInfo.insertedId) throw 'new rating insert failed :(';
+        
+        //console.log("in ratings: barId: "+theBar._id);
+        const allBarRatings = await this.getRatingsByBar(theBar._id.toString());
+        let totalBarRatings = allBarRatings.length;
+
+        let currOA = theBar.ratingsAverage.overallAvg;
+        let currCrA = theBar.ratingsAverage.crowdednessAvg;
+        let currClA = theBar.ratingsAverage.cleanlinessAvg;
+        let currPA = theBar.ratingsAverage.priceAvg;
+
+        let newOverallAvg = ((currOA*totalBarRatings) + overall)/(totalBarRatings + 1);
+        let newCrowdednessAvg = ((currCrA*totalBarRatings) + cleanliness)/(totalBarRatings + 1);
+        let newCleanlinessAvg = ((currClA*totalBarRatings) + crowdedness)/(totalBarRatings + 1);
+        let newPriceAvg = ((currPA*totalBarRatings) + price)/(totalBarRatings + 1);
+
+        await bars.updateBarPatch(barId,{
+            ratingsAverage:{
+                overallAvg: newOverallAvg,
+                crowdednessAvg: newCrowdednessAvg,
+                cleanlinessAvg: newCleanlinessAvg,
+                priceAvg: newPriceAvg
+            }
+        });
+        /*const userUpdated = users.updateUserPatch(userId,{
+            
+        })*/
+
         return await this.getRatingById(newInsertInfo.insertedId.toString());
+        
     },
     async removeRating(id){
         id = helpers.checkId(id, 'ratingId');

@@ -57,7 +57,7 @@ let exportedMethods = {
     //need to error check ratingsAvg and comments
     async updateBarPatch(id, updatedBar){
 
-        id = helpers.checkId(id, 'barID');
+        id = helpers.checkId(id, 'barBarID');
 
         if(updatedBar.name){
             updatedBar.name = helpers.checkString(updatedBar.name, 'barName');
