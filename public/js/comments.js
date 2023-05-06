@@ -64,12 +64,16 @@ async function renderComments() {
         let commentDiv = document.createElement('div');
         commentDiv.classList.add('comment');
 
+        let commmentUserId = document.createElement('p');
+        commmentUserId.innerText = comment.userId;
+
         let commentContent = document.createElement('p');
         commentContent.innerText = comment.content;
 
         let commentTime = document.createElement('p');
         commentTime.innerText = comment.time;
 
+        commentDiv.appendChild(commmentUserId);
         commentDiv.appendChild(commentContent);
         commentDiv.appendChild(commentTime);
 
@@ -85,6 +89,10 @@ const setupCommentForm = () => {
         e.preventDefault();
 
         let content = document.getElementById('comment').value;
+
+        
+
+
 
         // get barId
         let barId = await getBarId();
@@ -104,22 +112,6 @@ const setupCommentForm = () => {
 }
 
 // if the comment is posted by the same user, make the submission form have the content of the users comment, update the button to say “edit” and make it so that when the user clicks edit, it updates the comment instead of adding a new one
-
-async function updateComment(userId, content) {
-    // fetch
-    let response = await fetch(`/comments/${userId}`, {
-        method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ content })
-    });
-    if (response.status !== 200) {
-        throw await response.json();
-    }
-
-    return await response.json();
-}
 
 setTimeout(async () => {
     setupCommentForm();

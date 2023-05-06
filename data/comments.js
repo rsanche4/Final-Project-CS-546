@@ -61,11 +61,13 @@ export async function updateComment(id, updatedComment) {
     }
     //time needs more validation
     if (updatedComment.time) {
-        updatedComment.time = time;
+
+        updatedComment.time = updatedComment.time;
     }
     //content needs more validationd
     if (updatedComment.content) {
-        updatedComment.content = content;
+        updatedComment.content = updatedComment.content;
+
     }
 
     const commentCollection = await comments();
@@ -108,11 +110,11 @@ export async function updateCommentPatch(id, updatedComment) {
     }
     //time needs more validation
     if (updatedComment.time) {
-        updatedComment.time = time;
+        updatedComment.time = updatedComment.time;
     }
     //content needs more validationd
     if (updatedComment.content) {
-        updatedComment.content = content;
+        updatedComment.content = updatedComment.content;
     }
 
     const commentCollection = await comments();
@@ -121,6 +123,7 @@ export async function updateCommentPatch(id, updatedComment) {
         { $set: updatedComment },
         { returnDocument: 'after' }
     );
+    
     if (updateInfo.lastErrorObject.n === 0) {
         throw [
             404, `Error: update failed, could not find comment with id ${id}`
