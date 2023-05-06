@@ -166,7 +166,7 @@ let exportedMethods = {
 
         const userCollection = await users();
         const updateInfo = await userCollection.findOneAndUpdate(
-            { _id: ObjectId(id) },
+            { _id: new ObjectId(id) },
             { $set: updatedUser },
             { returnDocument: 'after' }
         );

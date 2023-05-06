@@ -1,6 +1,8 @@
 import { comments } from "../config/mongoCollections.js";
 import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
+import users from './users.js';
+import bars from './bars.js';
 
 export async function getAllComments() {
     const commentCollection = await comments();
@@ -35,6 +37,8 @@ export async function addComment( barId, userId, time, content ) {
     //have to do content validation
     content = content;
 
+    const theBar = await bars.getBarById(barId);
+    const theUser = await users.getUserById(userId);
     let newComment = {
         barId: barId,
         userId: userId,
@@ -42,9 +46,34 @@ export async function addComment( barId, userId, time, content ) {
         content: content
     };
 
+    //const
+
+
+    
     const commentCollection = await comments();
     const newInsertInfo = await commentCollection.insertOne(newComment);
     if (!newInsertInfo.insertedId) throw 'new comment insert failed :(';
+
+    let barCommentArray = theBar.comments;
+    if(!barCommentArray) barCommentArray = [];
+    if(barCommentArray.length < 1) barCommentArray = [];
+
+    let userCommentArray = theUser.comments;
+    if(!userCommentArray) userCommentArray = [];
+    if(userCommentArray.length < 1) barCommentArray = [];
+
+    barCommentArray.push(newInsertInfo.insertedId.toString());
+    userCommentArray.push(newInsertInfo.insertedId.toString());
+
+    await bars.updateBarPatch(barId,{
+        comments: barCommentArray
+    });
+
+    await users.updateUserPatch(userId,{
+        comments: userCommentArray
+    });
+
+    
     return await getCommentById(newInsertInfo.insertedId.toString());
 };
 
