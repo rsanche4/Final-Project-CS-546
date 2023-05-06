@@ -1,9 +1,7 @@
 import { users } from "../config/mongoCollections.js";
 const saltRounds = 16;
 import bcrypt from 'bcrypt';
-//import * as helpers from "../helpers.js";
-import helpers from "../helpers.js";
-//import { validString } from "../helpers.js";
+import * as helpers from "../helpers.js";
 import { ObjectId } from 'mongodb';
 
 export const createUser = async (
@@ -66,40 +64,19 @@ let exportedMethods = {
     async getUserById(id) {
         id = helpers.checkId(id, 'userID');
         const userCollection = await users();
-        const user = await userCollection.findOne({ _id: new ObjectId(id) });
+        const user = await userCollection.findOne({ _id: ObjectId(id) });
         if (!user) throw 'Error: User not found';
         return user;
     },
     //further error checking needed
-    async addUser(firstName, lastName, email, username, password,role) {
+    async addUser(firstName, lastName, email, username, hashedPassword) {
 
         firstName = helpers.checkString(firstName, 'userFirstName');
         lastName = helpers.checkString(lastName, 'userLastName');
-
-        console.log("this is email: " + email);
-        email = helpers.validEmail(email);
+        email = helpers.checkString(email, 'userEmail');
         username = helpers.checkString(username, 'userUsername');
-        password = helpers.validPassword(password);
+        hashedPassword = helpers.checkString(hashedPassword, 'userHashedPassword');
 
-        if(['admin','user'].indexOf(role.toLowerCase()) < 0){
-            throw new Error("Role can only be either 'admin' or 'user'.");
-        }
-
-        role = role.toLowerCase();
-
-        const userCollection = await users();
-        const emailExists = await userCollection.findOne({email: email});
-        const usernameExists = await userCollection.findOne({username: username});
-        
-        if(emailExists){
-            throw `Error: Email Address '${email}' already exists.`;
-        }
-
-        if(usernameExists){
-            throw `Error: Username '${username}' already exists.`;
-        }
-
-        const hashedPassword = await bcrypt.hash(password,saltRounds);
 
         let newUser = {
             firstName: firstName,
@@ -107,10 +84,10 @@ let exportedMethods = {
             email: email,
             username: username,
             hashedPassword: hashedPassword,
-            role,
             comments: []
         };
 
+        const userCollection = await users();
         const newInsertInfo = await userCollection.insertOne(newUser);
         if (!newInsertInfo.insertedId) throw 'new user Insert failed :(';
         return await this.getUserById(newInsertInfo.insertedId.toString());
@@ -166,7 +143,7 @@ let exportedMethods = {
 
         const userCollection = await users();
         const updateInfo = await userCollection.findOneAndUpdate(
-            { _id: new ObjectId(id) },
+            { _id: ObjectId(id) },
             { $set: updatedUser },
             { returnDocument: 'after' }
         );

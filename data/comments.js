@@ -1,8 +1,6 @@
 import { comments } from "../config/mongoCollections.js";
 import { ObjectId } from 'mongodb';
 import helpers from '../helpers.js';
-import users from './users.js';
-import bars from './bars.js';
 
 export async function getAllComments() {
     const commentCollection = await comments();
@@ -27,9 +25,7 @@ export async function getCommentById(id) {
     return comment;
 };
 
-//idk why the curly braces were in the params
-//export async function addComment({ barId, userId, time, content }) {
-export async function addComment( barId, userId, time, content ) {
+export async function addComment({ barId, userId, time, content }) {
     barId = helpers.checkId(barId, 'barId');
     userId = helpers.checkId(userId, 'userId');
     //have to do time validation
@@ -37,8 +33,6 @@ export async function addComment( barId, userId, time, content ) {
     //have to do content validation
     content = content;
 
-    const theBar = await bars.getBarById(barId);
-    const theUser = await users.getUserById(userId);
     let newComment = {
         barId: barId,
         userId: userId,
@@ -46,36 +40,47 @@ export async function addComment( barId, userId, time, content ) {
         content: content
     };
 
-    //const
-
-
-    
     const commentCollection = await comments();
     const newInsertInfo = await commentCollection.insertOne(newComment);
     if (!newInsertInfo.insertedId) throw 'new comment insert failed :(';
-
-    let barCommentArray = theBar.comments;
-    if(!barCommentArray) barCommentArray = [];
-    if(barCommentArray.length < 1) barCommentArray = [];
-
-    let userCommentArray = theUser.comments;
-    if(!userCommentArray) userCommentArray = [];
-    if(userCommentArray.length < 1) barCommentArray = [];
-
-    barCommentArray.push(newInsertInfo.insertedId.toString());
-    userCommentArray.push(newInsertInfo.insertedId.toString());
-
-    await bars.updateBarPatch(barId,{
-        comments: barCommentArray
-    });
-
-    await users.updateUserPatch(userId,{
-        comments: userCommentArray
-    });
-
-    
     return await getCommentById(newInsertInfo.insertedId.toString());
 };
+
+export async function updateComment(id, updatedComment) {
+    console.log(id, typeof id)
+    id = helpers.checkId(id, "commentId");
+    if (updatedComment.barId) {
+        updatedComment.barId = helpers.checkId(
+            updatedComment.barId, "commentBarId"
+        );
+    }
+    if (updatedComment.userId) {
+        updatedComment.userId = helpers.checkId(
+            updatedComment.userId, "commmentUserId"
+        );
+    }
+    //time needs more validation
+    if (updatedComment.time) {
+        updatedComment.time = updatedComment.time;
+    }
+    //content needs more validationd
+    if (updatedComment.content) {
+        updatedComment.content = updatedComment.content;
+    }
+
+    const commentCollection = await comments();
+    const updateInfo = await commentCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updatedComment }
+    );
+    if (updateInfo.modifiedCount === 0) {
+        throw [
+            404, `Error: update failed, could not find comment with id ${id}`
+        ];
+    }
+    return await getCommentById(id);
+};
+
 
 export async function removeComment(id) {
     id = helpers.checkId(id, "commentId");
@@ -103,11 +108,11 @@ export async function updateCommentPatch(id, updatedComment) {
     }
     //time needs more validation
     if (updatedComment.time) {
-        updatedComment.time = time;
+        updatedComment.time = updatedComment.time;
     }
     //content needs more validationd
     if (updatedComment.content) {
-        updatedComment.content = content;
+        updatedComment.content = updatedComment.content;
     }
 
     const commentCollection = await comments();
@@ -116,6 +121,7 @@ export async function updateCommentPatch(id, updatedComment) {
         { $set: updatedComment },
         { returnDocument: 'after' }
     );
+    
     if (updateInfo.lastErrorObject.n === 0) {
         throw [
             404, `Error: update failed, could not find comment with id ${id}`
