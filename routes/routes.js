@@ -29,7 +29,7 @@ router.route('/homepage').get(async (req, res) => {
     let featured_bars = []
 
     allBars.forEach(bar => {
-      let avg_score = (bar.ratingsAverage.overallAvg / 2 + bar.ratingsAverage.crowdednessAvg + bar.ratingsAverage.cleanlinessAvg + bar.ratingsAverage.priceAvg) / 4
+      let avg_score = (bar.ratingsAverage.overallAvg / 2 + bar.ratingsAverage.crowdednessAvg + bar.ratingsAverage.cleanlinessAvg + bar.ratingsAverage.priceAvg + bar.ratingsAverage.waittimeAvg) / 4
 
       let number_of_ratings = 0
       allRatings.forEach(rating => { // double check id check todo
@@ -156,7 +156,9 @@ router
 
         let rated_bar_already = false
         // before adding the rating check if user's id shows up in any ratings with that barid
+        let isLog = false
         if (req.session.user) {
+          isLog = true
           let prevallRatings = await ratingData.getAllRatings()
           prevallRatings.forEach(rating => {
             if (rating.barId.toString() === req.params.id) {
@@ -168,6 +170,22 @@ router
         }
        
       let map = `${bar.name.split(' ').join('+')},Hoboken+NJ`;
+      map = map.replace("'", '')
+      map = map.replace('&', 'and')
+
+      let waittime_string = ''
+      if (bar.ratingsAverage.waittimeAvg > 0 && bar.ratingsAverage.waittimeAvg <= 1) {
+        waittime_string = 'More than 1 hour'
+      } else if (bar.ratingsAverage.waittimeAvg > 1 && bar.ratingsAverage.waittimeAvg <= 2) {
+        waittime_string = 'Approximately 45 minutes'
+      }else if (bar.ratingsAverage.waittimeAvg > 2 && bar.ratingsAverage.waittimeAvg <= 3) {
+        waittime_string = 'Approximately 30 minutes'
+      }else if (bar.ratingsAverage.waittimeAvg > 3 && bar.ratingsAverage.waittimeAvg <= 4) {
+        waittime_string = 'Less than 10 minutes'
+      }else if (bar.ratingsAverage.waittimeAvg > 4 && bar.ratingsAverage.waittimeAvg <= 5) {
+        waittime_string = 'Less than 5 minutes'
+      }
+
       res.render('barpage', {
 
           id: req.params.id,
@@ -177,13 +195,14 @@ router
           ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
           ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
           ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
+          ratingsAverage_waitAvg: waittime_string,
           location: bar.location,
           description: bar.description,
           didRateAlready: rated_bar_already,
           apikey: apikey,
           mapLocation: map,
-          isAdmin: admin
-
+          isAdmin: admin,
+          isLogged: isLog
         });
 
 
@@ -216,11 +235,12 @@ router
           updated_rating.crowdedness = Number(req.body.ratingsAverage_crowdednessAvg)
           updated_rating.cleanliness = Number(req.body.ratingsAverage_cleanlinessAvg)
           updated_rating.price = Number(req.body.ratingsAverage_priceAvg)
+          updated_rating.waittime = Number(req.body.ratingsAverage_waitAvg)
           let updating_rating = await ratingData.updateRatingPatch(rating_id, updated_rating)  
         
           
         } else {
-          let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg), req.session.user.id)
+          let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg), req.session.user.id, Number(req.body.ratingsAverage_waitAvg))
         }
 
         
@@ -233,6 +253,7 @@ router
         let crowd_arr = []
         let clean_arr = []
         let price_arr = []
+        let wait_arr = []
 
         allRatings.forEach(rating => {
           if (rating.barId.toString() === req.params.id) {
@@ -240,6 +261,8 @@ router
             crowd_arr.push(rating.crowdedness)
             clean_arr.push(rating.cleanliness)
             price_arr.push(rating.price)
+            wait_arr.push(rating.waittime)
+
           }
         });
 
@@ -247,6 +270,7 @@ router
         bar.ratingsAverage.crowdednessAvg = helpers.average(crowd_arr)
         bar.ratingsAverage.cleanlinessAvg = helpers.average(clean_arr)
         bar.ratingsAverage.priceAvg = helpers.average(price_arr)
+        bar.ratingsAverage.waittimeAvg = helpers.average(wait_arr)
 
         let updated_bar = await barData.updateBarPatch(req.params.id, bar)
 
@@ -361,7 +385,8 @@ router
                 overallAvg: 0,
                 crowdednessAvg: 0,
                 cleanlinessAvg: 0,
-                priceAvg: 0
+                priceAvg: 0,
+                waittimeAvg: 0
             },
             picture: updateImage
       }; 

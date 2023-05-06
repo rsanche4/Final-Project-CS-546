@@ -3,17 +3,19 @@
   <img class="bigger_images" alt={{name}} src={{picture}}>
   <br>
   <h3>Overall: {{ratingsAverage_overallAvg}} <br> Crowdedness: {{ratingsAverage_crowdednessAvg}} <br> Cleanliness:
-    {{ratingsAverage_cleanlinessAvg}} <br> Price: {{ratingsAverage_priceAvg}} <br> </h3>
+    {{ratingsAverage_cleanlinessAvg}} <br> Price: {{ratingsAverage_priceAvg}} <br> Waittime: {{ratingsAverage_waitAvg}} <br> </h3>
   <address>Address: {{location}}</address>
   <p>{{description}}</p>
-
+{{#if isLogged}}
   {{#if didRateAlready}}
   <p>You already rated the bar. Edit your rating below!</p>
-  
+
   {{else}}
-   <p>Been here? Fill out the ratings below for this bar!</p>
+  <p>Been here? Fill out the ratings below for this bar!</p>
   {{/if}}
+
   
+
   <form method="POST" action="/searchbars/{{id}}">
 
     <label for="ratingsAverage_overallAvg">Overall Rating: </label>
@@ -57,9 +59,21 @@
       <option value="5">5</option>
     </select>
 
+   <label for="ratingsAverage_waitAvg">Wait Rating: </label>
+    <select name="ratingsAverage_waitAvg" id="ratingsAverage_waitAvg">
+      <option value="5">Less than 5 minutes</option>
+      <option value="4">Less than 10 minutes</option>
+      <option value="3">Approximately 30 minutes</option>
+      <option value="2">Approximately 45 minutes</option>
+      <option value="1">More than 1 hour</option>
+    </select>
 
     <button type="Submit">Submit</button>
   </form>
+
+
+
+
   <div id="comment-mount"></div>
   {{!-- comment submission form --}}
   <form id="comment-form">
@@ -67,18 +81,12 @@
     <textarea id="comment" name="comment" rows="4" cols="50"></textarea>
     <button type="submit">Submit</button>
   </form>
-<script src="/public/js/comments.js"></script>
-
+  <script src="/public/js/comments.js"></script>
+  {{/if}}
 </div>
 
-<iframe
-  width="600"
-  height="450"
-  style="border:0"
-  loading="lazy"
-  allowfullscreen
-  referrerpolicy="no-referrer-when-downgrade"
-  src="https://www.google.com/maps/embed/v1/place?key={{apikey}}
+<iframe width="600" height="450" style="border:0" loading="lazy" allowfullscreen
+  referrerpolicy="no-referrer-when-downgrade" src="https://www.google.com/maps/embed/v1/place?key={{apikey}}
     &q={{mapLocation}}">
 </iframe>
 
@@ -93,4 +101,3 @@
 </form>
 
 {{/if}}
-

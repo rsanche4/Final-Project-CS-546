@@ -2,6 +2,7 @@ import { users } from "../config/mongoCollections.js";
 const saltRounds = 16;
 import bcrypt from 'bcrypt';
 import * as helpers from "../helpers.js";
+import helpers_second from "../helpers.js" 
 import { ObjectId } from 'mongodb';
 
 export const createUser = async (
@@ -62,28 +63,28 @@ let exportedMethods = {
     },
 
     async getUserById(id) {
-        id = helpers.checkId(id, 'userID');
+        id = helpers_second.checkId(id, 'userID');
         const userCollection = await users();
-        const user = await userCollection.findOne({ _id: ObjectId(id) });
+        const user = await userCollection.findOne({ _id: new ObjectId(id) });
         if (!user) throw 'Error: User not found';
         return user;
     },
     //further error checking needed
     async addUser(firstName, lastName, email, username, hashedPassword) {
 
-        firstName = helpers.checkString(firstName, 'userFirstName');
-        lastName = helpers.checkString(lastName, 'userLastName');
-        email = helpers.checkString(email, 'userEmail');
-        username = helpers.checkString(username, 'userUsername');
-        hashedPassword = helpers.checkString(hashedPassword, 'userHashedPassword');
+        firstName = helpers_second.checkString(firstName, 'userFirstName');
+        lastName = helpers_second.checkString(lastName, 'userLastName');
+        email = helpers_second.checkString(email, 'userEmail');
+        username = helpers_second.checkString(username, 'userUsername');
+        hashedPassword = helpers_second.checkString(hashedPassword, 'userHashedPassword');
 
-
+        const hashedPassword2 = await bcrypt.hash(hashedPassword, saltRounds);
         let newUser = {
             firstName: firstName,
             lastName: lastName,
             email: email,
             username: username,
-            hashedPassword: hashedPassword,
+            hashedPassword: hashedPassword2,
             comments: []
         };
 
@@ -95,10 +96,10 @@ let exportedMethods = {
     },
 
     async removeUser(id) {
-        id = helpers.checkId(id, 'userID');
+        id = helpers_second.checkId(id, 'userID');
         const userCollection = await users();
         const deletionInfo = await userCollection.findOneAndDelete({
-            _id: ObjectId(id)
+            _id: new ObjectId(id)
         });
         if (deletionInfo.lastErrorObject.n === 0) {
             throw [404, `Error: Could not delete user with id ${id}`];
@@ -108,42 +109,42 @@ let exportedMethods = {
     },
 
     async updateUserPatch(id, updatedUser) {
-        id = helpers.checkId(id, "userId");
+        id = helpers_second.checkId(id, "userId");
         if (updatedUser.firstName) {
-            updatedUser.firstName = helpers.checkString(
+            updatedUser.firstName = helpers_second.checkString(
                 updatedUser.firstName, 'userFirstName'
             );
         }
         if (updatedUser.lastName) {
-            updatedUser.lastName = helpers.checkString(
+            updatedUser.lastName = helpers_second.checkString(
                 updatedUser.lastName, 'userLastNaame'
             );
         }
         if (updatedUser.email) {
-            updatedUser.email = helpers.checkString(
+            updatedUser.email = helpers_second.checkString(
                 updatedUser.email, 'userEmail'
             );
         }
         if (updatedUser.username) {
-            updatedUser.username = helpers.checkString(
+            updatedUser.username = helpers_second.checkString(
                 updatedUser.email, 'userUsername'
             );
         }
         if (updatedUser.hashedPassword) {
-            updatedUser.hashedPassword = helpers.checkString(
+            updatedUser.hashedPassword = helpers_second.checkString(
                 updatedUser.hashedPassword, 'userHashedPassword'
             );
         }
         if (!Array.isArray(updatedUser.comments)) {
             updatedUser.comments = [];
         } else {
-            updatedUser.comments = helpers.checkStringArray(
+            updatedUser.comments = helpers_second.checkStringArray(
                 updatedUser.comments, 'comments');
         }
 
         const userCollection = await users();
         const updateInfo = await userCollection.findOneAndUpdate(
-            { _id: ObjectId(id) },
+            { _id: new ObjectId(id) },
             { $set: updatedUser },
             { returnDocument: 'after' }
         );

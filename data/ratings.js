@@ -15,21 +15,23 @@ let exportedMethods = {
         if(!rating) throw 'Error: rating not found';
         return rating;
     },
-    async addRating(barId, overall, crowdedness, cleanliness, price, userId){
+    async addRating(barId, overall, crowdedness, cleanliness, price, userId, waittime){
         barId = helpers.checkId(barId, 'barId');
         userId = helpers.checkId(userId, 'userId');
         overall = helpers.checkOverallRating(overall, 'overallRating');
         crowdedness = helpers.checkRating(crowdedness, 'crowdednessRating');
         cleanliness = helpers.checkRating(cleanliness,'cleanlinessRating');
         price = helpers.checkRating(price, 'priceRating');
-        
+        waittime = helpers.checkRating(waittime, 'waittimeRating');
+
         let newRating = {
             barId: barId,
             userId: userId,
             overall: overall,
             crowdedness: crowdedness,
             cleanliness: cleanliness,
-            price: price
+            price: price,
+            waittime: waittime
         };
 
         const ratingCollection = await ratings();
@@ -41,7 +43,7 @@ let exportedMethods = {
         id = helpers.checkId(id, 'ratingId');
         const ratingCollection = await ratings();
         const deletionInfo = await ratingCollection.findOneAndDelete({
-            _id:ObjectId(id)
+            _id:new ObjectId(id)
         });
         if(deletionInfo.lastErrorObject.n === 0){
             throw [404, `Error: Could not delete rating with id ${id}`];
@@ -79,6 +81,11 @@ let exportedMethods = {
         if(updatedRating.price){
             updatedRating.price = helpers.checkRating(
                 updatedRating.price, "ratingPriceRating"
+            );
+        }
+        if(updatedRating.waittime){
+            updatedRating.waittime = helpers.checkRating(
+                updatedRating.waittime, "ratingWaittimeRating"
             );
         }
 

@@ -19,7 +19,7 @@ router
       const lastNameInput = check.validString(req.body.lastNameInput);
       const emailAddressInput = check.validEmail(req.body.emailAddressInput);
       const passwordInput = check.validPassword(req.body.passwordInput);
-      let roleInput = check.validString(req.body.roleInput);
+      let roleInput = 'user'
       if (passwordInput !== req.body.confirmPasswordInput) {
         throw new Error("Passwords do not match");
       }
