@@ -46,6 +46,42 @@ export async function addComment({ barId, userId, time, content }) {
     return await getCommentById(newInsertInfo.insertedId.toString());
 };
 
+export async function updateComment(id, updatedComment) {
+    console.log(id, typeof id)
+    id = helpers.checkId(id, "commentId");
+    if (updatedComment.barId) {
+        updatedComment.barId = helpers.checkId(
+            updatedComment.barId, "commentBarId"
+        );
+    }
+    if (updatedComment.userId) {
+        updatedComment.userId = helpers.checkId(
+            updatedComment.userId, "commmentUserId"
+        );
+    }
+    //time needs more validation
+    if (updatedComment.time) {
+        updatedComment.time = time;
+    }
+    //content needs more validationd
+    if (updatedComment.content) {
+        updatedComment.content = content;
+    }
+
+    const commentCollection = await comments();
+    const updateInfo = await commentCollection.updateOne(
+        { _id: new ObjectId(id) },
+        { $set: updatedComment }
+    );
+    if (updateInfo.modifiedCount === 0) {
+        throw [
+            404, `Error: update failed, could not find comment with id ${id}`
+        ];
+    }
+    return await getCommentById(id);
+};
+
+
 export async function removeComment(id) {
     id = helpers.checkId(id, "commentId");
     const commentCollection = await comments();

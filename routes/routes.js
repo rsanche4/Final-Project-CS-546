@@ -2,7 +2,7 @@ import { Router } from 'express';
 import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
-import { getCommentsByBarID, addComment } from "../data/comments.js"
+import { getCommentsByBarID, addComment, updateComment } from "../data/comments.js"
 
 const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
 
@@ -293,6 +293,13 @@ router
       }
       if (!req.body.content) {
         return res.status(400).json({ error: 'You must provide content' });
+      }
+      //if someone already posted a comment, edit comment content
+      let comments = await getCommentsByBarID(req.params.barId)
+      let userComment = comments.filter(comment => comment.userId === req.session.user.id)
+      if (userComment.length > 0) {
+        let comment = await updateComment(`` + userComment[0]._id, req.body.content)
+        return res.json(comment)
       }
       console.log(req.session.user)
       console.log(req.params.barId, req.body.content)
