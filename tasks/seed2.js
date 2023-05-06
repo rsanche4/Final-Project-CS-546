@@ -1,8 +1,11 @@
-import { dbConnection, closeConnection } from "./config/mongoConnection";
+import { dbConnection, closeConnection } from "../config/mongoConnection.js";
 import users from '../data/users.js';
 import bars from '../data/bars.js'
-import ratings from '../data/ratings'
-import comments from '../data/comments'
+import ratings from '../data/ratings.js'
+//import comments from '../data/comments.js'
+import { addComment } from "../data/comments.js"
+import { createUser } from "../data/users.js"
+//import helpers from "../helpers.js"
 
 const db = await dbConnection();
 await db.dropDatabase();
@@ -11,6 +14,7 @@ const adminAccount = await users.addUser(
     'Patrick', 
     'Hill',
     'phill@stevens.edu',
+    "TheManWithThePlan",
     'Password123!@',
     'admin'
     );
@@ -21,6 +25,7 @@ const userAccount = await users.addUser(
     'Alfredo',
     'Mendez',
     'alfredo@stevens.edu',
+    "Alfredo69",
     'Test123!@',
     'user'
 );
@@ -29,6 +34,7 @@ const userAccount2 = await users.addUser(
     "Pawan",
     "Perera",
     "pawan@minecraft.net",
+    "PawanP",
     "Test123!@",
     "user"
 );
@@ -199,14 +205,14 @@ for(let i = 0; i < barIds.length; i++){
 //50-100 ratings to RANDOM bars
 let numOfRatings = gmanor();
 for(let i = 0; i < numOfRatings; i++){
-    await ratings.addRatings(gmabid(), gmar(10), gmar(5), gmar(5), gmar(5), gmauid());
+    await ratings.addRating(gmabid(), gmar(10), gmar(5), gmar(5), gmar(5), gmauid());
 }
 
 //25-50 reviews to RANDOM bars by RANDOM users
 let numOfComments = gmanoc();
 for(let i = 0; i < numOfComments; i++){
     //maybe just get the current time in the helpers
-    await comments.addComments(gmabid(), gmauid(), "temp date string", gmac());
+    await addComment(gmabid(), gmauid(), "temp date string", gmac());
 }
 
 console.log("done seeding database");

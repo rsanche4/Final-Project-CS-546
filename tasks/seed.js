@@ -1,5 +1,5 @@
-import { barData } from "./data/index.js"
-import { createUser } from "./data/users.js"
+import { barData } from "../data/index.js"
+import { createUser } from "../data/users.js"
 
 let n_bars = 500
 let n_users = 60
