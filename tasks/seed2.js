@@ -57,7 +57,27 @@ const barReviews = [
   "I've been to a lot of bars in my life, but this one is definitely one of the top 10 bars I've been to this week.",
   "The only thing better than the drinks here is the karaoke. If you want to hear a grown man sing 'I Will Survive,' this is the place to be.",
   "I don't always dance, but when I do, it's at this bar. The music is so good that it's like a magnet for my feet.",
-  "This bar is like a warm hug in the form of a building. The only difference is that instead of a hug, you get a cocktail."
+  "This bar is like a warm hug in the form of a building. The only difference is that instead of a hug, you get a cocktail.",
+  "This bar is tremendous. Believe me, it's got the best drinks. The bartenders are winners, just like me. They know how to make a bar great again.",
+  "I've been to a lot of bars, and let me tell you, this one is fantastic. The atmosphere is yuge and the service is top-notch. It's a total winner!",
+  "The drinks at this bar are tremendous. Nobody makes drinks like they do here. You won't find better drinks anywhere else, folks. It's just incredible.",
+  "I've seen a lot of bars in my time, but this one is a real gem. The cocktails are so good, it'll make your head spin. Nobody does it better than this bar. Nobody!",
+  "This bar is a total success. The drinks are like a beautiful piece of art. You'll be blown away by the flavors. It's a tremendous experience.",
+  "When it comes to bars, this one is a total winner. The staff is incredible. They're smart, they're talented, and they know how to make a bar great. You'll love it.",
+  "I've been saying it for years: this bar is tremendous. The drinks are the best. It's like winning the lottery. You've got to check it out.",
+  "This bar is like a dream come true. The drinks are out of this world. You won't believe how good they are. It's just tremendous.",
+  "I've been to many bars, but this one is in a league of its own. The atmosphere is incredible. It's like a five-star hotel. You'll feel like a million bucks.",
+  "Let me tell you, this bar is fantastic. The drinks are incredible. It's like being in paradise. You won't want to leave.",
+  "This bar is a total winner. The drinks are so good, it's like magic. It's just tremendous. You'll be amazed.",
+  "I've seen a lot of bars in my life, but this one is something special. The drinks are tremendous. You won't find better anywhere else.",
+  "Believe me, this bar is amazing. The drinks are top-notch. You won't be disappointed. It's just fantastic.",
+  "I've been to bars all over the world, and this one is the best. The drinks are incredible. You won't believe how good they are.",
+  "This bar is a total success. The drinks are tremendous. It's like hitting a hole in one. You've got to try it.",
+  "Let me tell you, this bar is tremendous. The drinks are like gold. You won't find better anywhere else. It's just fantastic.",
+  "I've been to many bars, but this one is on another level. The drinks are incredible. It's like winning the lottery. You'll love it.",
+  "This bar is a total winner. The drinks are so good, it's like magic. You won't believe it. It's just tremendous.",
+  "I've seen a lot of bars in my time, but this one is something special. The drinks are tremendous. You won't find better anywhere else.",
+  "Believe me, this bar is amazing. The drinks are top-notch. It's like being in heaven. You won't be disappointed."
 ];
 
 const amid = userAccount._id.toString();

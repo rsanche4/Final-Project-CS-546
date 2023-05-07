@@ -55,7 +55,7 @@ router
       const user = await checkUser(emailAddressInput, passwordInput);
       //console.log(user);
       if (user) {
-        req.session.user = { id: user._id, firstName: user.firstName, lastName: user.lastName, emailAddress: user.emailAddress, role: user.role };
+        req.session.user = { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role };
         if (user.role === "admin") {
           return res.redirect('/auth/admin');
         } else {
@@ -79,7 +79,7 @@ router.route('/protected').get(async (req, res) => {
           admin = true
         }
 
-    return res.render('protected', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString(), isAdmin: admin});
+    return res.render('protected', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, email: req.session.user.email, role: req.session.user.role, currentTime: new Date().toLocaleTimeString(), isAdmin: admin});
 
   } catch (e) {
     return res.status(404).json({ message: e });
@@ -89,7 +89,7 @@ router.route('/protected').get(async (req, res) => {
 router.route('/admin').get(async (req, res) => {
 
   try{ // PAWAN DID THIS
-    return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, emailAddress: req.session.user.emailAddress, role: req.session.user.role, currentTime: new Date().toLocaleTimeString()});
+    return res.render('admin', { user: req.session.user, firstName: req.session.user.firstName, lastName: req.session.user.lastName, email: req.session.user.email, role: req.session.user.role, currentTime: new Date().toLocaleTimeString()});
 
   } catch (e) {
     return res.status(500).json({ message: e });

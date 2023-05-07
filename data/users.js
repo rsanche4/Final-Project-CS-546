@@ -29,7 +29,7 @@ export const createUser = async (
     let newUser = {
         firstName: firstName,
         lastName: lastName,
-        emailAddress: emailAddress,
+        email: emailAddress,
         role: role,
         hashedPassword: hashedPassword
     }
@@ -44,7 +44,7 @@ export const checkUser = async (emailAddress, password) => {
     emailAddress = helpers.validEmail(emailAddress);
     password = helpers.validPassword(password);
     const userCollection = await users();
-    const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
+    const emailExists = await userCollection.findOne({ email: emailAddress });
     if (!emailExists) {
         throw new Error("Either the username or password is invalid")
     }
@@ -70,14 +70,14 @@ let exportedMethods = {
         return user;
     },
     //further error checking needed
-    async addUser(firstName, lastName, email, username, hashedPassword) {
+    async addUser(firstName, lastName, email, username, password) {
 
         firstName = helpers_second.checkString(firstName, 'userFirstName');
         lastName = helpers_second.checkString(lastName, 'userLastName');
         email = helpers_second.checkString(email, 'userEmail');
         username = helpers_second.checkString(username, 'userUsername');
-        hashedPassword = helpers_second.checkString(hashedPassword, 'userHashedPassword');
-
+        //hashedPassword = helpers_second.checkString(hashedPassword, 'userHashedPassword');
+        let hashedPassword = helpers.validPassword(password);
         const hashedPassword2 = await bcrypt.hash(hashedPassword, saltRounds);
         let newUser = {
             firstName: firstName,
