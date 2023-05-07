@@ -256,7 +256,7 @@ for(let i = 0; i < numOfComments; i++){
 
 for(let i = 0; i < barIds.length; i++){
     for(let j = 0; j < userIds.length; j++){
-        await addComment(barIds[i], userIds[j], "temp date string", gmac());
+        await addComment(barIds[i], userIds[j], new Date(), gmac());
     }
 }
 
