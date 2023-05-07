@@ -9,7 +9,7 @@ export async function getAllComments() {
 };
 
 export async function getCommentsByBarID(barId) {
-    barId = helpers.checkId(barId, 'barId');
+    barId = helpers.checkId(barId, 'commentBarId');
     const commentCollection = await comments();
     const commentList = await commentCollection.find({ barId: barId }).toArray();
 
@@ -25,7 +25,7 @@ export async function getCommentById(id) {
     return comment;
 };
 
-export async function addComment({ barId, userId, time, content }) {
+export async function addComment( barId, userId, time, content ) {
     barId = helpers.checkId(barId, 'barId');
     userId = helpers.checkId(userId, 'userId');
     //have to do time validation

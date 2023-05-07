@@ -16,7 +16,7 @@ let exportedMethods = {
         return rating;
     },
     async addRating(barId, overall, crowdedness, cleanliness, price, userId, waittime){
-        barId = helpers.checkId(barId, 'barId');
+        barId = helpers.checkId(barId, 'ratingBarId');
         userId = helpers.checkId(userId, 'userId');
         overall = helpers.checkOverallRating(overall, 'overallRating');
         crowdedness = helpers.checkRating(crowdedness, 'crowdednessRating');
