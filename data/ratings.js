@@ -1,6 +1,7 @@
 import {ratings} from '../config/mongoCollections.js';
 import {ObjectId} from 'mongodb';
 import helpers from '../helpers.js';
+import bars from './bars.js';
 
 let exportedMethods = {
     async getAllRatings(){
@@ -15,6 +16,20 @@ let exportedMethods = {
         if(!rating) throw 'Error: rating not found';
         return rating;
     },
+    async getRatingsByBar(barId){
+        barId = helpers.checkId(barId, 'barId');
+        const ratingCollection = await ratings();
+        const ratingArray = await ratingCollection
+        .find({barId: barId})
+        .toArray();
+        if(!ratingArray){
+            throw `Error: ratings with barId '${barId}' not found`;
+        }
+        if(ratingArray.length < 1){
+            throw `Error: ratings with barId: '${barId}' not found`;
+        }
+        return ratingArray;
+    },
     async addRating(barId, overall, crowdedness, cleanliness, price, userId, waittime){
         barId = helpers.checkId(barId, 'ratingBarId');
         userId = helpers.checkId(userId, 'userId');
@@ -23,6 +38,8 @@ let exportedMethods = {
         cleanliness = helpers.checkRating(cleanliness,'cleanlinessRating');
         price = helpers.checkRating(price, 'priceRating');
         waittime = helpers.checkRating(waittime, 'waittimeRating');
+
+        const theBar = await bars.getBarById(barId);
 
         let newRating = {
             barId: barId,
@@ -37,6 +54,30 @@ let exportedMethods = {
         const ratingCollection = await ratings();
         const newInsertInfo = await ratingCollection.insertOne(newRating);
         if(!newInsertInfo.insertedId) throw 'new rating insert failed :(';
+
+        const allBarRatings = await this.getRatingsByBar(theBar._id.toString());
+        let totalBarRatings = allBarRatings.length;
+
+        let currOA = theBar.ratingsAverage.overallAvg;
+        let currCrA = theBar.ratingsAverage.crowdednessAvg;
+        let currClA = theBar.ratingsAverage.cleanlinessAvg;
+        let currPriceAvg = theBar.ratingsAverage.priceAvg;
+        
+        let newOverallAvg = Math.floor(((currOA*totalBarRatings) + overall)/(totalBarRatings + 1));
+        let newCrowdednessAvg = Math.floor(((currCrA*totalBarRatings) + cleanliness)/(totalBarRatings + 1));
+        let newCleanlinessAvg = Math.floor(((currClA*totalBarRatings) + crowdedness)/(totalBarRatings + 1));
+        let newPriceAvg = Math.floor(((currPriceAvg*totalBarRatings) + overall)/(totalBarRatings + 1));
+
+        console.log(`noa: ${newOverallAvg}, ncra: ${newCrowdednessAvg}, ncla: ${newCleanlinessAvg}, npa: ${newPriceAvg}`);
+        await bars.updateBarPatch(barId,{
+            ratingsAverage:{
+                overallAvg: newOverallAvg,
+                crowdednessAvg: newCrowdednessAvg,
+                cleanlinessAvg: newCleanlinessAvg,
+                priceAvg: newPriceAvg
+            }
+        });
+
         return await this.getRatingById(newInsertInfo.insertedId.toString());
     },
     async removeRating(id){

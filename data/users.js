@@ -52,7 +52,7 @@ export const checkUser = async (emailAddress, password) => {
     if (!compare) {
         throw new Error("Either the username or password is invalid")
     }
-    return { _id: String(emailExists._id), firstName: emailExists.firstName, lastName: emailExists.lastName, emailAddress, role: emailExists.role }
+    return { _id: String(emailExists._id), firstName: emailExists.firstName, lastName: emailExists.lastName, email: emailAddress, role: emailExists.role }
 };
 
 let exportedMethods = {
@@ -70,13 +70,18 @@ let exportedMethods = {
         return user;
     },
     //further error checking needed
-    async addUser(firstName, lastName, email, username, password) {
+    async addUser(firstName, lastName, email, username, password,role) {
 
         firstName = helpers_second.checkString(firstName, 'userFirstName');
         lastName = helpers_second.checkString(lastName, 'userLastName');
         email = helpers_second.checkString(email, 'userEmail');
         username = helpers_second.checkString(username, 'userUsername');
+        //role = helpers.validString
         //hashedPassword = helpers_second.checkString(hashedPassword, 'userHashedPassword');
+        if(['admin','user'].indexOf(role.toLowerCase()) < 0){
+            throw `Error: role must either be 'admin' or 'user'`
+        }
+        role = role.toLowerCase();
         let hashedPassword = helpers.validPassword(password);
         const hashedPassword2 = await bcrypt.hash(hashedPassword, saltRounds);
         let newUser = {
@@ -85,7 +90,8 @@ let exportedMethods = {
             email: email,
             username: username,
             hashedPassword: hashedPassword2,
-            comments: []
+            comments: [],
+            role: role
         };
 
         const userCollection = await users();

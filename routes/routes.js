@@ -146,7 +146,7 @@ router
   .route('/searchbars/:id') 
   .get(async (req, res) => {
     try {
-      let bar = await barData.getBarById(req.params.id)
+      let bar = await barData.getBarById(req.params.id);
 
 
         let admin = false
@@ -186,6 +186,9 @@ router
         waittime_string = 'Less than 5 minutes'
       }
 
+      console.log("t1: "+bar.ratingsAverage.overallAvg);
+      console.log("t2: "+bar.ratingsAverage);
+      console.log("t1: "+bar["ratingsAverage"]);
       res.render('barpage', {
 
           id: req.params.id,

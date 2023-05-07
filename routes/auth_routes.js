@@ -56,6 +56,7 @@ router
       //console.log(user);
       if (user) {
         req.session.user = { id: user._id, firstName: user.firstName, lastName: user.lastName, email: user.email, role: user.role };
+        console.log('ur: '+user.role);
         if (user.role === "admin") {
           return res.redirect('/auth/admin');
         } else {
