@@ -135,7 +135,7 @@ const exportedMethods = {
         arr.forEach(element => {
             acc = acc + element
         });
-        return acc/arr.length
+        return Math.floor(acc/arr.length);
     }
     
 };
