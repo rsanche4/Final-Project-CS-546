@@ -26,7 +26,7 @@ export async function getCommentById(id) {
 };
 
 export async function addComment( barId, userId, time, content ) {
-    barId = helpers.checkId(barId, 'barId');
+    barId = helpers.checkId(barId, 'addCommentBarId');
     userId = helpers.checkId(userId, 'userId');
     //have to do time validation
     time = time;

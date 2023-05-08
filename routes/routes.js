@@ -336,14 +336,22 @@ router
         return res.json(comment)
       }
       
-
+      console.log("req params id: "+req.params.barId);
       let newComment = {
         barId: req.params.barId,
         userId: req.session.user.id,
         time: new Date(),
         content: xss(req.body.content)
       }
-      let comment = await addComment(newComment)
+      console.log("test1");
+      //let comment = await addComment(newComment)
+      let comment = await addComment(
+        newComment.barId,
+        newComment.userId,
+        newComment.time,
+        newComment.content
+      );
+      console.log("test2");
       res.json(comment)
     } catch (e) {
       console.error(e)
@@ -374,7 +382,7 @@ router
 
      try {
   
-      id = helpers.checkId(id, 'barID');
+      id = helpers.checkId(id, 'barTestID');
       const updateName = helpers.checkString(update.updateName, 'barName');
       const updateAddress = helpers.checkString(update.updateAddress, 'barLocation');
       const updateDesc = helpers.checkString(update.updateDesc, 'barDescription');
