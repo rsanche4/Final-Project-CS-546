@@ -145,14 +145,6 @@ let uI = document.getElementById('updateImage');
 let uA = document.getElementById('updateAddress');
 let uD = document.getElementById('updateDesc')
 
-if(del) {
-    del.addEventListener('click', (event) => {
-        event.preventDefault();
-        barFunc.removeBar(id);
-        del.click();
-    });
-}
-
 if(add) {
     add.addEventListener('submit', (event) => {
         event.preventDefault();
