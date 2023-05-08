@@ -2,6 +2,7 @@ import { Router } from 'express';
 import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
+import userData from '../data/users.js';
 
 import { getCommentsByBarID, addComment, updateComment, updateCommentPatch } from "../data/comments.js";
 import xss from 'xss';
@@ -69,10 +70,10 @@ router
     try {
       let allBars = await barData.getAllBars()
       let admin = false
-        if (req.session.user && req.session.user.role === "admin") {
-          admin = true
-        }
-      
+      if (req.session.user && req.session.user.role === "admin") {
+        admin = true
+      }
+
       res.render('searchBars', {
         isAdmin: admin,
         allBars: allBars
@@ -144,32 +145,32 @@ router.route('/error').get(async (req, res) => { // regular error. not much new 
 });
 
 router
-  .route('/searchbars/:id') 
+  .route('/searchbars/:id')
   .get(async (req, res) => {
     try {
       let bar = await barData.getBarById(req.params.id);
 
 
-        let admin = false
-        if (req.session.user && req.session.user.role === "admin") {
-          admin = true
-        }
+      let admin = false
+      if (req.session.user && req.session.user.role === "admin") {
+        admin = true
+      }
 
-        let rated_bar_already = false
-        // before adding the rating check if user's id shows up in any ratings with that barid
-        let isLog = false
-        if (req.session.user) {
-          isLog = true
-          let prevallRatings = await ratingData.getAllRatings()
-          prevallRatings.forEach(rating => {
-            if (rating.barId.toString() === req.params.id) {
-              if (rating.userId.toString()=== req.session.user.id) {
-                rated_bar_already = true
-              }
+      let rated_bar_already = false
+      // before adding the rating check if user's id shows up in any ratings with that barid
+      let isLog = false
+      if (req.session.user) {
+        isLog = true
+        let prevallRatings = await ratingData.getAllRatings()
+        prevallRatings.forEach(rating => {
+          if (rating.barId.toString() === req.params.id) {
+            if (rating.userId.toString() === req.session.user.id) {
+              rated_bar_already = true
             }
-          });
-        }
-       
+          }
+        });
+      }
+
       let map = `${bar.name.split(' ').join('+')},Hoboken+NJ`;
       map = map.replace("'", '')
       map = map.replace('&', 'and')
@@ -179,35 +180,35 @@ router
         waittime_string = 'More than 1 hour'
       } else if (bar.ratingsAverage.waittimeAvg > 1 && bar.ratingsAverage.waittimeAvg <= 2) {
         waittime_string = 'Approximately 45 minutes'
-      }else if (bar.ratingsAverage.waittimeAvg > 2 && bar.ratingsAverage.waittimeAvg <= 3) {
+      } else if (bar.ratingsAverage.waittimeAvg > 2 && bar.ratingsAverage.waittimeAvg <= 3) {
         waittime_string = 'Approximately 30 minutes'
-      }else if (bar.ratingsAverage.waittimeAvg > 3 && bar.ratingsAverage.waittimeAvg <= 4) {
+      } else if (bar.ratingsAverage.waittimeAvg > 3 && bar.ratingsAverage.waittimeAvg <= 4) {
         waittime_string = 'Less than 10 minutes'
-      }else if (bar.ratingsAverage.waittimeAvg > 4 && bar.ratingsAverage.waittimeAvg <= 5) {
+      } else if (bar.ratingsAverage.waittimeAvg > 4 && bar.ratingsAverage.waittimeAvg <= 5) {
         waittime_string = 'Less than 5 minutes'
       }
 
-      console.log("t1: "+bar.ratingsAverage.overallAvg);
-      console.log("t2: "+bar.ratingsAverage);
-      console.log("t1: "+bar["ratingsAverage"]);
+      console.log("t1: " + bar.ratingsAverage.overallAvg);
+      console.log("t2: " + bar.ratingsAverage);
+      console.log("t1: " + bar["ratingsAverage"]);
       res.render('barpage', {
 
-          id: xss(req.params.id),
-          name: bar.name,
-          picture: bar.picture,
-          ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
-          ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
-          ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
-          ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
-          ratingsAverage_waitAvg: waittime_string,
-          location: bar.location,
-          description: bar.description,
-          didRateAlready: rated_bar_already,
-          apikey: apikey,
-          mapLocation: map,
-          isAdmin: admin,
-          isLogged: isLog
-        });
+        id: xss(req.params.id),
+        name: bar.name,
+        picture: bar.picture,
+        ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
+        ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
+        ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
+        ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
+        ratingsAverage_waitAvg: waittime_string,
+        location: bar.location,
+        description: bar.description,
+        didRateAlready: rated_bar_already,
+        apikey: apikey,
+        mapLocation: map,
+        isAdmin: admin,
+        isLogged: isLog
+      });
 
 
     } catch (e) {
@@ -217,7 +218,7 @@ router
   })
   .post(async (req, res) => { // HERE IN THE POST USERS WILL LEAVE THEIR RATINGS. (comments are submitted using Ajax. Currently not implemented as Kristy will implement that)
     try {
-      
+
       if (req.session.user) {
         let rated_bar_already = false
         // before adding the rating check if user's id shows up in any ratings with that barid
@@ -225,29 +226,29 @@ router
         let rating_id = ''
         prevallRatings.forEach(rating => {
           if (rating.barId.toString() === req.params.id) {
-            if (rating.userId.toString()=== req.session.user.id) {
+            if (rating.userId.toString() === req.session.user.id) {
               rated_bar_already = true
               rating_id = rating._id.toString() // Not sure if id is like this actually
             }
           }
         });
-        
+
         if (rated_bar_already) {
           let updated_rating = await ratingData.getRatingById(rating_id)
-          
+
           updated_rating.overall = Number(xss(req.body.ratingsAverage_overallAvg))
           updated_rating.crowdedness = Number(xss(req.body.ratingsAverage_crowdednessAvg))
           updated_rating.cleanliness = Number(xss(req.body.ratingsAverage_cleanlinessAvg))
           updated_rating.price = Number(xss(req.body.ratingsAverage_priceAvg))
           updated_rating.waittime = Number(xss(req.body.ratingsAverage_waitAvg))
-          let updating_rating = await ratingData.updateRatingPatch(rating_id, updated_rating)  
-        
-          
+          let updating_rating = await ratingData.updateRatingPatch(rating_id, updated_rating)
+
+
         } else {
           let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg), req.session.user.id, Number(req.body.ratingsAverage_waitAvg))
         }
 
-        
+
 
         let bar = await barData.getBarById(req.params.id)
 
@@ -310,8 +311,20 @@ router
   .get(async (req, res) => {
     try {
       let comments = await getCommentsByBarID(req.params.barId)
-      res.json(comments)
+    
+      const commentsWithUsers = await Promise.all(comments.map(async (comment) => {
+
+        const user = await userData.getUserById(comment.userId);
+        comment.user = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+        };
+        return comment;
+      }));
+
+      res.json(commentsWithUsers)
     } catch (e) {
+      console.log(e)
       res.status(500).json({ error: e });
     }
   })
@@ -332,11 +345,11 @@ router
       if (userComment.length > 0) {
         userComment[0].content = xss(req.body.content)
         let comment = await updateCommentPatch(userComment[0]._id.toString(), userComment[0])
-        
+
         return res.json(comment)
       }
-      
-      console.log("req params id: "+req.params.barId);
+
+      console.log("req params id: " + req.params.barId);
       let newComment = {
         barId: req.params.barId,
         userId: req.session.user.id,
@@ -361,11 +374,11 @@ router
 
 
 
-  router
-  .route('/update/:id') 
+router
+  .route('/update/:id')
   .get(async (req, res) => {
     let bar = await barData.getBarById(req.params.id)
-    
+
     res.render('updateBar', {
       id: req.params.id,
       title: 'Update Listing',
@@ -380,30 +393,30 @@ router
     let id = req.params.id;
 
 
-     try {
-  
+    try {
+
       id = helpers.checkId(id, 'barTestID');
       const updateName = helpers.checkString(update.updateName, 'barName');
       const updateAddress = helpers.checkString(update.updateAddress, 'barLocation');
       const updateDesc = helpers.checkString(update.updateDesc, 'barDescription');
       const updateImage = helpers.checkString(update.updateImage, 'barPicture');
-    
+
       let updated = {
         name: updateName,
-            location: updateAddress,
-            description: updateDesc,
-            comments: [],
-            ratingsAverage: {
-                overallAvg: 0,
-                crowdednessAvg: 0,
-                cleanlinessAvg: 0,
-                priceAvg: 0,
-                waittimeAvg: 0
-            },
-            picture: updateImage
-      }; 
+        location: updateAddress,
+        description: updateDesc,
+        comments: [],
+        ratingsAverage: {
+          overallAvg: 0,
+          crowdednessAvg: 0,
+          cleanlinessAvg: 0,
+          priceAvg: 0,
+          waittimeAvg: 0
+        },
+        picture: updateImage
+      };
       const updateBar = await barData.updateBarPatch(id, updated);
-      res.redirect('/searchbars/'+id);
+      res.redirect('/searchbars/' + id);
     } catch (e) {
       // Something went wrong with the server!
       console.log(e)
@@ -411,22 +424,22 @@ router
     }
   });
 
-  router
+router
   .route('/create')
   .get(async (req, res) => {
-    res.render('addBar', {title: 'Add Bar Listing'});
+    res.render('addBar', { title: 'Add Bar Listing' });
   })
-  .post(async (req, res) => { 
+  .post(async (req, res) => {
     try {
-    let create = xss(req.body);
-    const addName = helpers.checkString(create.addName, 'barName');
-    const addAddress = helpers.checkString(create.addAddress, 'barLocation');
-    const addDesc = helpers.checkString(create.addDesc, 'barDescription');
-    const addImage = helpers.checkString(create.addImage, 'barPicture');
+      let create = xss(req.body);
+      const addName = helpers.checkString(create.addName, 'barName');
+      const addAddress = helpers.checkString(create.addAddress, 'barLocation');
+      const addDesc = helpers.checkString(create.addDesc, 'barDescription');
+      const addImage = helpers.checkString(create.addImage, 'barPicture');
 
-  
+
       const newBar = await barData.addBar(addName, addAddress, addDesc, addImage);
-      res.redirect('/searchbars/'+newBar._id.toString());
+      res.redirect('/searchbars/' + newBar._id.toString());
 
     } catch (e) {
       console.log(e)
@@ -436,13 +449,13 @@ router
   });
 
 
-  router
+router
   .route('/delete/:id')
   .get(async (req, res) => {
     console.log("NOT SUPPOSED TO BE HERE")
-    
+
   })
-  .post(async (req, res) => { 
+  .post(async (req, res) => {
     try {
       let deleting_bar = await barData.removeBar(req.params.id)
       res.redirect('/searchbars')

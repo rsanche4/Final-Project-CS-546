@@ -60,22 +60,20 @@ async function renderComments() {
     });
 
     for (let comment of sorted) {
-        console.log(comment)
         let commentDiv = document.createElement('div');
         commentDiv.classList.add('comment');
+        const time = new Date(comment.time);
+
 
         let commmentUserId = document.createElement('p');
-        commmentUserId.innerText = comment.userId;
+        commmentUserId.innerText = comment.user.firstName + ' ' + comment.user.lastName + " on " + time.toLocaleDateString();
 
         let commentContent = document.createElement('p');
         commentContent.innerText = comment.content;
 
-        let commentTime = document.createElement('p');
-        commentTime.innerText = comment.time;
 
         commentDiv.appendChild(commmentUserId);
         commentDiv.appendChild(commentContent);
-        commentDiv.appendChild(commentTime);
 
         commentsMount.appendChild(commentDiv);
     }
@@ -90,22 +88,19 @@ const setupCommentForm = () => {
 
         let content = document.getElementById('comment').value;
 
-        
-
-
-
         // get barId
         let barId = await getBarId();
 
         // add comment
         const comment = await addComment(barId, content);
 
-        // push to llist
-        comments.push(comment);
 
         // empty the comment box
         document.getElementById('comment').value = '';
 
+        comments = []
+        await loadComments();
+        
         // re rendere comments
         await renderComments();
     });
