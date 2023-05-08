@@ -1,3 +1,5 @@
+import * as barFunc from '../../data/bars.js';
+
 const validString = function validString(string) {
     //string is not empty
     if (!string) {
@@ -142,8 +144,6 @@ let uN = document.getElementById('updateName');
 let uI = document.getElementById('updateImage');
 let uA = document.getElementById('updateAddress');
 let uD = document.getElementById('updateDesc')
-
-import * as barFunc from '../../data/bars.js';
 
 if(del) {
     del.addEventListener('click', (event) => {
