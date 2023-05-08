@@ -83,6 +83,10 @@ async function renderComments() {
 const setupCommentForm = () => {
     let commentForm = document.getElementById('comment-form');
 
+    // chcek if comment form exists. if not, we're not logged in, so that's ok
+    if (!commentForm) return;
+
+
     commentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 

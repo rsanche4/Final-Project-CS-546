@@ -150,7 +150,6 @@ router
     try {
       let bar = await barData.getBarById(req.params.id);
 
-
       let admin = false
       if (req.session.user && req.session.user.role === "admin") {
         admin = true
@@ -213,6 +212,7 @@ router
 
     } catch (e) {
       // Something went wrong with the server!
+      console.log(500)
       res.status(500).send(e);
     }
   })
