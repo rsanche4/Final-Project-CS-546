@@ -26,13 +26,13 @@ let exportedMethods = {
             name: name,
             location: location,
             description: description,
-            comments: [],
+            //comments: [],
             ratingsAverage: {
-                overallAvg: 0,
-                crowdednessAvg: 0,
-                cleanlinessAvg: 0,
-                priceAvg: 0,
-                waittimeAvg: 0
+                overallAvg: 1,
+                crowdednessAvg: 1,
+                cleanlinessAvg: 1,
+                priceAvg: 1,
+                waittimeAvg: 1 
             },
             picture: picture
         }
@@ -72,7 +72,7 @@ let exportedMethods = {
         if(updatedBar.picture){
             updatedBar.picture = helpers.checkString(updatedBar.picture, 'barPicture');
         }
-        if(!Array.isArray(updatedBar.comments)){
+        /*if(!Array.isArray(updatedBar.comments)){
             updatedBar.comments = [];
         }
         else{
@@ -80,6 +80,7 @@ let exportedMethods = {
                 updatedBar.comments, 'comments'
             );
         }
+        */
         if(!updatedBar.ratingsAverage){
             updatedBar.ratingsAverage = {
                 overallAvg: 0,
