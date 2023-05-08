@@ -2,6 +2,7 @@ import { Router } from 'express';
 const router = Router();
 import { createUser, checkUser } from "../data/users.js"
 import * as check from "../helpers.js";
+import xss from 'xss';
 
 router.route('/').get(async (req, res) => {
   //code here for GET THIS ROUTE SHOULD NEVER FIRE BECAUSE OF MIDDLEWARE #1 IN SPECS.
@@ -15,10 +16,10 @@ router
   })
   .post(async (req, res) => {
     try {
-      const firstNameInput = check.validString(req.body.firstNameInput);
-      const lastNameInput = check.validString(req.body.lastNameInput);
-      const emailAddressInput = check.validEmail(req.body.emailAddressInput);
-      const passwordInput = check.validPassword(req.body.passwordInput);
+      const firstNameInput = check.validString(xss(req.body.firstNameInput));
+      const lastNameInput = check.validString(xss(req.body.lastNameInput));
+      const emailAddressInput = check.validEmail(xss(req.body.emailAddressInput));
+      const passwordInput = check.validPassword(xss(req.body.passwordInput));
       let roleInput = 'user'
       if (passwordInput !== req.body.confirmPasswordInput) {
         throw new Error("Passwords do not match");
@@ -50,8 +51,8 @@ router
   })
   .post(async (req, res) => {
     try {
-      const emailAddressInput = check.validEmail(req.body.emailAddressInput);
-      const passwordInput = check.validPassword(req.body.passwordInput);
+      const emailAddressInput = check.validEmail(xss(req.body.emailAddressInput));
+      const passwordInput = check.validPassword(xss(req.body.passwordInput));
       const user = await checkUser(emailAddressInput, passwordInput);
       //console.log(user);
       if (user) {

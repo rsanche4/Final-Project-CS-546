@@ -3,7 +3,8 @@ import helpers from '../helpers.js'
 import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
 
-import { getCommentsByBarID, addComment, updateComment, updateCommentPatch } from "../data/comments.js"
+import { getCommentsByBarID, addComment, updateComment, updateCommentPatch } from "../data/comments.js";
+import xss from 'xss';
 
 const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
 
@@ -98,7 +99,7 @@ router
       return
     }
     try {
-      let term = req.body.searchVenueTerm.trim().toLowerCase()
+      let term = xss(req.body.searchVenueTerm).trim().toLowerCase()
 
       let allBars = await barData.getAllBars()
 
@@ -191,7 +192,7 @@ router
       console.log("t1: "+bar["ratingsAverage"]);
       res.render('barpage', {
 
-          id: req.params.id,
+          id: xss(req.params.id),
           name: bar.name,
           picture: bar.picture,
           ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
@@ -234,11 +235,11 @@ router
         if (rated_bar_already) {
           let updated_rating = await ratingData.getRatingById(rating_id)
           
-          updated_rating.overall = Number(req.body.ratingsAverage_overallAvg)
-          updated_rating.crowdedness = Number(req.body.ratingsAverage_crowdednessAvg)
-          updated_rating.cleanliness = Number(req.body.ratingsAverage_cleanlinessAvg)
-          updated_rating.price = Number(req.body.ratingsAverage_priceAvg)
-          updated_rating.waittime = Number(req.body.ratingsAverage_waitAvg)
+          updated_rating.overall = Number(xss(req.body.ratingsAverage_overallAvg))
+          updated_rating.crowdedness = Number(xss(req.body.ratingsAverage_crowdednessAvg))
+          updated_rating.cleanliness = Number(xss(req.body.ratingsAverage_cleanlinessAvg))
+          updated_rating.price = Number(xss(req.body.ratingsAverage_priceAvg))
+          updated_rating.waittime = Number(xss(req.body.ratingsAverage_waitAvg))
           let updating_rating = await ratingData.updateRatingPatch(rating_id, updated_rating)  
         
           
@@ -329,7 +330,7 @@ router
       console.log(userComment)
       console.log(req.session.user.id)
       if (userComment.length > 0) {
-        userComment[0].content = req.body.content
+        userComment[0].content = xss(req.body.content)
         let comment = await updateCommentPatch(userComment[0]._id.toString(), userComment[0])
         
         return res.json(comment)
@@ -340,7 +341,7 @@ router
         barId: req.params.barId,
         userId: req.session.user.id,
         time: new Date(),
-        content: req.body.content
+        content: xss(req.body.content)
       }
       let comment = await addComment(newComment)
       res.json(comment)
@@ -367,7 +368,7 @@ router
     })
   })
   .post(async (req, res) => {
-    let update = req.body;
+    let update = xss(req.body);
     let id = req.params.id;
 
 
@@ -409,7 +410,7 @@ router
   })
   .post(async (req, res) => { 
     try {
-    let create = req.body;
+    let create = xss(req.body);
     const addName = helpers.checkString(create.addName, 'barName');
     const addAddress = helpers.checkString(create.addAddress, 'barLocation');
     const addDesc = helpers.checkString(create.addDesc, 'barDescription');
