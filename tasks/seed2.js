@@ -240,7 +240,7 @@ for(let i = 0; i < numOfRatings; i++){
 for(let i = 0; i < barIds.length; i++){
     for( let j = 0; j < userIds.length;j++){
         await ratings.addRating(
-            barIds[j], gmar(10), gmar(5), gmar(5), gmar(5), userIds[j], gmar(5) 
+            barIds[i], gmar(10), gmar(5), gmar(5), gmar(5), userIds[j], gmar(5) 
         );
     }
 }

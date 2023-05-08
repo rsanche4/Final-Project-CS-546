@@ -62,19 +62,22 @@ let exportedMethods = {
         let currCrA = theBar.ratingsAverage.crowdednessAvg;
         let currClA = theBar.ratingsAverage.cleanlinessAvg;
         let currPriceAvg = theBar.ratingsAverage.priceAvg;
+        let currWA = theBar.ratingsAverage.waittimeAvg;
         
         let newOverallAvg = Math.floor(((currOA*totalBarRatings) + overall)/(totalBarRatings + 1));
         let newCrowdednessAvg = Math.floor(((currCrA*totalBarRatings) + cleanliness)/(totalBarRatings + 1));
         let newCleanlinessAvg = Math.floor(((currClA*totalBarRatings) + crowdedness)/(totalBarRatings + 1));
         let newPriceAvg = Math.floor(((currPriceAvg*totalBarRatings) + overall)/(totalBarRatings + 1));
+        let newWaittimeAvg = Math.floor(((currWA*totalBarRatings) + waittime)/(totalBarRatings + 1));
 
-        console.log(`noa: ${newOverallAvg}, ncra: ${newCrowdednessAvg}, ncla: ${newCleanlinessAvg}, npa: ${newPriceAvg}`);
+        console.log(`bid: ${barId} bn: ${theBar.name} \nnoa: ${newOverallAvg}, ncra: ${newCrowdednessAvg}, ncla: ${newCleanlinessAvg}, npa: ${newPriceAvg}`);
         await bars.updateBarPatch(barId,{
             ratingsAverage:{
                 overallAvg: newOverallAvg,
                 crowdednessAvg: newCrowdednessAvg,
                 cleanlinessAvg: newCleanlinessAvg,
-                priceAvg: newPriceAvg
+                priceAvg: newPriceAvg,
+                waittimeAvg: newWaittimeAvg
             }
         });
 
