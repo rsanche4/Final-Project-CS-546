@@ -1,4 +1,4 @@
-import * as barFunc from '../../data/bars.js';
+
 
 const validString = function validString(string) {
     //string is not empty
