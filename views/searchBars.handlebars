@@ -5,7 +5,9 @@
     <button type="submit">go</button>
 </form>
 {{#if isAdmin}}
-<button id="addButton" onclick="location.href='/create'">Add Listing</button>
+<form method="GET" action="/create">
+  <button id="addButton" onclick="location.href = '/create'">Add Listing</button>
+</form>
 {{/if}}
 <section>
     <h2>All Bars</h2>

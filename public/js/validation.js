@@ -136,18 +136,18 @@ if (document.querySelector('#login-form')) {
 let add = document.getElementById('addForm');
 let del = document.getElementById('delete');
 let update = document.getElementById('updateForm');
-let aN = document.getElementById('addName');
-let aI = document.getElementById('addImage');
-let aA = document.getElementById('addAddress');
-let aD = document.getElementById('addDesc');
-let uN = document.getElementById('updateName');
-let uI = document.getElementById('updateImage');
-let uA = document.getElementById('updateAddress');
-let uD = document.getElementById('updateDesc')
+let aN = document.getElementById('addName').value;
+let aI = document.getElementById('addImage').value;
+let aA = document.getElementById('addAddress').value;
+let aD = document.getElementById('addDesc').value;
+let uN = document.getElementById('updateName').value;
+let uI = document.getElementById('updateImage').value;
+let uA = document.getElementById('updateAddress').value;
+let uD = document.getElementById('updateDesc').value;
 
 if(add) {
-    add.addEventListener('submit', (event) => {
-        event.preventDefault();
+    add.addEventListener('submit', (e) => {
+        //e.preventDefault();
         const errors = [];
         try {
             validString(aN);
@@ -181,8 +181,8 @@ if(add) {
 }
 
 if(update) {
-    add.addEventListener('submit', (event) => {
-        event.preventDefault();
+    update.addEventListener('submit', (e) => {
+        e.preventDefault()
         const errors = [];
         try {
             validString(uN);

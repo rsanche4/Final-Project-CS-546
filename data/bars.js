@@ -26,7 +26,7 @@ let exportedMethods = {
             name: name,
             location: location,
             description: description,
-            //comments: [],
+            comments: [],
             ratingsAverage: {
                 overallAvg: 1,
                 crowdednessAvg: 1,

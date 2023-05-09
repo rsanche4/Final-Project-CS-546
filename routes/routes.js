@@ -389,17 +389,21 @@ router
     })
   })
   .post(async (req, res) => {
-    let update = xss(req.body);
+    let update = req.body;
     let id = req.params.id;
+    // let oldBar = await barData.getBarById(req.params.id);
 
+    // let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
+    // let saveCrowd = xss(oldBar.ratingsAverage.crowdednessAvg);
+    // let saveClean = xss(oldBar.ratingsAverage.priceAvg)
 
     try {
 
       id = helpers.checkId(id, 'barTestID');
-      const updateName = helpers.checkString(update.updateName, 'barName');
-      const updateAddress = helpers.checkString(update.updateAddress, 'barLocation');
-      const updateDesc = helpers.checkString(update.updateDesc, 'barDescription');
-      const updateImage = helpers.checkString(update.updateImage, 'barPicture');
+      const updateName = helpers.checkString(xss(update.updateName), 'barName');
+      const updateAddress = helpers.checkString(xss(update.updateAddress), 'barLocation');
+      const updateDesc = helpers.checkString(xss(update.updateDesc), 'barDescription');
+      const updateImage = helpers.checkString(xss(update.updateImage), 'barPicture');
 
       let updated = {
         name: updateName,
@@ -431,12 +435,13 @@ router
   })
   .post(async (req, res) => {
       console.log("test");
-    try {
       let create = req.body;
-      const addName = xss(helpers.checkString(create.addName, 'barName'));
-      const addAddress = xss(helpers.checkString(create.addAddress, 'barLocation'));
-      const addDesc = xss(helpers.checkString(create.addDesc, 'barDescription'));
-      const addImage = xss(helpers.checkString(create.addImage, 'barPicture'));
+    try {
+      
+      const addName = helpers.checkString(xss(create.addName), 'barName');
+      const addAddress = helpers.checkString(xss(create.addAddress), 'barLocation');
+      const addDesc = helpers.checkString(xss(create.addDesc), 'barDescription');
+      const addImage = helpers.checkString(xss(create.addImage), 'barPicture');
       //console.log("test");
 
       const newBar = await barData.addBar(addName, addAddress, addDesc, addImage);
