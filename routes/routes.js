@@ -430,13 +430,14 @@ router
     res.render('addBar', { title: 'Add Bar Listing' });
   })
   .post(async (req, res) => {
+      console.log("test");
     try {
-      let create = xss(req.body);
-      const addName = helpers.checkString(create.addName, 'barName');
-      const addAddress = helpers.checkString(create.addAddress, 'barLocation');
-      const addDesc = helpers.checkString(create.addDesc, 'barDescription');
-      const addImage = helpers.checkString(create.addImage, 'barPicture');
-
+      let create = req.body;
+      const addName = xss(helpers.checkString(create.addName, 'barName'));
+      const addAddress = xss(helpers.checkString(create.addAddress, 'barLocation'));
+      const addDesc = xss(helpers.checkString(create.addDesc, 'barDescription'));
+      const addImage = xss(helpers.checkString(create.addImage, 'barPicture'));
+      //console.log("test");
 
       const newBar = await barData.addBar(addName, addAddress, addDesc, addImage);
       res.redirect('/searchbars/' + newBar._id.toString());

@@ -30,8 +30,8 @@ export const createUser = async (
         firstName: firstName,
         lastName: lastName,
         email: emailAddress,
-        role: role,
-        hashedPassword: hashedPassword
+        hashedPassword: hashedPassword,
+        role: role
     }
     const insertInfo = await userCollection.insertOne(newUser);
     if (insertInfo.insertedCount === 0) {
@@ -70,12 +70,12 @@ let exportedMethods = {
         return user;
     },
     //further error checking needed
-    async addUser(firstName, lastName, email, username, password,role) {
+    async addUser(firstName, lastName, email, password,role) {
 
         firstName = helpers_second.checkString(firstName, 'userFirstName');
         lastName = helpers_second.checkString(lastName, 'userLastName');
         email = helpers_second.checkString(email, 'userEmail');
-        username = helpers_second.checkString(username, 'userUsername');
+        //username = helpers_second.checkString(username, 'userUsername');
         //role = helpers.validString
         //hashedPassword = helpers_second.checkString(hashedPassword, 'userHashedPassword');
         if(['admin','user'].indexOf(role.toLowerCase()) < 0){
@@ -88,7 +88,7 @@ let exportedMethods = {
             firstName: firstName,
             lastName: lastName,
             email: email,
-            username: username,
+            //username: username,
             hashedPassword: hashedPassword2,
             comments: [],
             role: role
@@ -131,11 +131,11 @@ let exportedMethods = {
                 updatedUser.email, 'userEmail'
             );
         }
-        if (updatedUser.username) {
+        /*if (updatedUser.username) {
             updatedUser.username = helpers_second.checkString(
                 updatedUser.email, 'userUsername'
             );
-        }
+        }*/
         if (updatedUser.hashedPassword) {
             updatedUser.hashedPassword = helpers_second.checkString(
                 updatedUser.hashedPassword, 'userHashedPassword'

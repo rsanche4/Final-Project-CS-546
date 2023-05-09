@@ -35,6 +35,7 @@ router
       }
       roleInput = roleInput.toLowerCase();
       const newUser = await createUser(firstNameInput, lastNameInput, emailAddressInput, passwordInput, roleInput);
+      //const addUser = await addUser(firstNameInput,lastNameInput,emailAddressInput,)
       if (newUser.insertedUser) {
         return res.redirect('/auth/login');
       }

@@ -22,7 +22,7 @@ const adminAccount = await users.addUser(
     'Patrick', 
     'Hill',
     'phill@stevens.edu',
-    "TheManWithThePlan",
+    //"TheManWithThePlan",
     'Password123!@',
     'admin'
     );
@@ -33,7 +33,7 @@ const userAccount = await users.addUser(
     'Alfredo',
     'Mendez',
     'alfredo@stevens.edu',
-    "Alfredo69",
+    //"Alfredo69",
     'Test123!@',
     'user'
 );
@@ -42,7 +42,7 @@ const userAccount2 = await users.addUser(
     "Pawan",
     "Perera",
     "pawan@minecraft.net",
-    "PawanP",
+    //"PawanP",
     "Test123!@",
     "user"
 );
