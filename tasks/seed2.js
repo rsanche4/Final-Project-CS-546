@@ -94,7 +94,8 @@ const mcswiggans = await bars.addBar(
     "110 1st St, Hoboken, NJ 07030",
     "Great Bar with great atmosphere. You will love your time here!",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipMHbsKfiNwWMjTWXRKziRkou2ufSi9YIT-xvBR-=s1360-w1360-h1020"
+    
 );
 
 const mcswiggansID = mcswiggans._id.toString();
@@ -105,7 +106,7 @@ const madison  = await bars.addBar(
     "1316 Washington St, Hoboken, NJ 07030",
     "New American fare & drink specials in a roadhouse-style space that's bustling on weekends.",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipMI7uuOE2E4syOiPtrfsaDCt7UiO00iX6hfM2Jq=s1360-w1360-h1020"
 
 );
 
@@ -117,7 +118,7 @@ const shepherd = await bars.addBar(
     "1313 Willow Ave, Hoboken, NJ 07030",
     "Craft beer & elevated pub fare including brunch, dished up in a funky tavern setting with TV sports.",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://resizer.otstatic.com/v2/photos/wide-huge/2/41720533.jpg"
 );
 
 const shepherdID = shepherd._id.toString();
@@ -128,7 +129,7 @@ const mikie = await bars.addBar(
     "616 Washington St, Hoboken, NJ 07030",
     "This casual, patio-fronted sports bar boasts an extensive menu of burgers, sandwiches & entrees.",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipPn0MbWGr-JOcqkMJMR7QhiT-bN_MeL30gS8nxN=s1360-w1360-h1020"
 
 
 );
@@ -141,7 +142,7 @@ const eigth = await bars.addBar(
     "800 Washington St, Hoboken, NJ 07030",
     "Great Bar, Great times, Great Drinks, Great Food = Great Nights!",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipPDUbYyjZO7yJeTl3yPA_1rMHpSW2CxgJ2bk6Li=s1360-w1360-h1020"
 
 );
 
@@ -153,7 +154,7 @@ const madd = await bars.addBar(
     "221 Washington St, Hoboken, NJ 07030",
     "Loud, lively hangout featurig 40+ TVs for sports, a huge beer selection & comfort food favorites.",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipNULo-nuYdGMBLT94OA5RK90zoCYPKmdFEShfJ9=s1360-w1360-h1020"
 );
 
 const maddID = madd._id.toString();
@@ -164,8 +165,7 @@ const wicked = await bars.addBar(
     "120 Sinatra Dr, Hoboken, NJ 07030",
     "Casual sports bar offering plentiful TVs, pub grub & outdoor riverside seating, plus bands & DJs",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
-
+    "https://www.skyviewpros.com/wp-content/uploads/2012/09/wicked1.jpg"
 );
 
 const wickedID = wicked._id.toString();
@@ -176,7 +176,7 @@ const farside = await bars.addBar(
     "531 Washington St, Hoboken, NJ 07030",
     "Laid-back local tavern offering American grub, a full bar, a dartboard, a back patio & sports on TV",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipNaJyhlSrvGC_O6zitgREaJJgPhtGCfgpwVAX4q=s1360-w1360-h1020"
 
 );
 
@@ -188,7 +188,7 @@ const louise = await bars.addBar(
     "329 Washington St, Hoboken, NJ 07030",
     "Beer, cocktails & bar bites served in a relaxed watering hole with a pool table & jukebox",
     //"https://static.wikia.nocookie.net/elderscrolls/images/b/b1/Four_Shields_Tavern.jpg/revision/latest?cb=20140502235035"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://fastly.4sqi.net/img/general/600x600/0DGBPDTDKDNG1I40RQ531CGM1ZANEMS24H0SHQ4GHDLBXM2O.jpg"
 );
 
 const louiseID = louise._id.toString();
@@ -199,7 +199,7 @@ const mulligans = await bars.addBar(
     "159 1st St, Hoboken, NJ 07030",
     "Bustling, classic Irish bar for game day featuring a pool table, small ppub menu & draft beer.",
 //    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://www.hoboken-bar.net/wp-content/uploads/2018/03/mul-ph3.jpg"
 );
 
 const mulligansID = mulligans._id.toString();
@@ -209,7 +209,7 @@ const shannon = await bars.addBar(
     "The Shannon",
     "106 1st St, Hoboken, NJ 07030",
     "TV-lined Irish sports bar that fills up on weekends with fresh-out-of-college types.",
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://www.skyviewpros.com/wp-content/uploads/2012/09/shannon4.jpg"
 
 )
 
@@ -220,7 +220,7 @@ const belo = await bars.addBar(
     "Belo Bar & kitched",
     "104 Hudson St, Hoboken, NJ 07030",
     "Concicial haunt featuring Irish pub grub & a large beer list, plus a fireplace & outdoor seating.",
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh3.googleusercontent.com/p/AF1QipPa2xeiUgw-LY1LT_YkxV7vumlDsfUt7ss6xeOG=s1360-w1360-h1020"
 );
 const beloID = belo._id.toString();
 barIds.push(beloID);
@@ -229,7 +229,7 @@ const carpe = await bars.addBar(
     "Carpe Diem",
     "1405 Grand St, Hoboken, NJ 07030",
     "This bar is awesome bro, trust me",
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://media-cdn.tripadvisor.com/media/photo-s/04/a1/cb/25/nice-bar.jpg"
 );
 
 const carpeID = carpe._id.toString();
@@ -239,7 +239,7 @@ const cork = await bars.addBar(
     "Cork City Pub",
     "239 Bloomfield St, Hoboken, NJ 07030",
     "Old-school speakeasy offering some 150 varieties of beer in bottles & on tap plus frequent tastings.",
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://lh5.googleusercontent.com/p/AF1QipPD6jQyBZH6aDWVUenndY0obEINCdgKBEycY8Iz=w800-h500-k-no"
 );
 
 const corkID = cork._id.toString();
@@ -249,7 +249,7 @@ const ferry = await bars.addBar(
     "The Ferryman On 1st Hoboken",
     "94-98 Bloomfield St, Hoboken, NJ 07030",
     "This bar is better than all the other bars",
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.architecturaldigest.com%2Fgallery%2Fbest-designed-bar-each-state&psig=AOvVaw1f-QjCFM1_qcN2s5sstGIK&ust=1683676244972000&source=images&cd=vfe&ved=0CBAQjRxqFwoTCNif9_f05v4CFQAAAAAdAAAAABAD"
+    "https://www.nj.com/resizer/otxUF_3obu3USvSneQwxh2KznyY=/1280x0/smart/cloudfront-us-east-1.images.arcpublishing.com/advancelocal/KXUQ7U4YCNCJ7IP64SXK7SMIRU.jpg"
 );
 
 const ferryID = ferry._id.toString();
