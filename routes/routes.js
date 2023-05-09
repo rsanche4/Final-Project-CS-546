@@ -200,22 +200,22 @@ router
       console.log("t2: " + bar.ratingsAverage);
       console.log("t1: " + bar["ratingsAverage"]);
       res.render('barpage', {
-        title: bar.name,
+        title: xss(bar.name),
         id: xss(req.params.id),
-        name: bar.name,
-        picture: bar.picture,
-        ratingsAverage_overallAvg: bar.ratingsAverage.overallAvg,
-        ratingsAverage_crowdednessAvg: bar.ratingsAverage.crowdednessAvg,
-        ratingsAverage_cleanlinessAvg: bar.ratingsAverage.cleanlinessAvg,
-        ratingsAverage_priceAvg: bar.ratingsAverage.priceAvg,
-        ratingsAverage_waitAvg: waittime_string,
-        location: bar.location,
-        description: bar.description,
-        didRateAlready: rated_bar_already,
-        apikey: apikey,
-        mapLocation: map,
-        isAdmin: admin,
-        isLogged: isLog
+        name: xss(bar.name),
+        picture: xss(bar.picture),
+        ratingsAverage_overallAvg: xss(bar.ratingsAverage.overallAvg),
+        ratingsAverage_crowdednessAvg: xss(bar.ratingsAverage.crowdednessAvg),
+        ratingsAverage_cleanlinessAvg: xss(bar.ratingsAverage.cleanlinessAvg),
+        ratingsAverage_priceAvg: xss(bar.ratingsAverage.priceAvg),
+        ratingsAverage_waitAvg: xss(waittime_string),
+        location: xss(bar.location),
+        description: xss(bar.description),
+        didRateAlready: xss(rated_bar_already),
+        apikey: xss(apikey),
+        mapLocation: xss(map),
+        isAdmin: xss(admin),
+        isLogged: xss(isLog)
       });
 
 
@@ -254,7 +254,7 @@ router
 
 
         } else {
-          let submitting_rating = await ratingData.addRating(req.params.id, Number(req.body.ratingsAverage_overallAvg), Number(req.body.ratingsAverage_crowdednessAvg), Number(req.body.ratingsAverage_cleanlinessAvg), Number(req.body.ratingsAverage_priceAvg), req.session.user.id, Number(req.body.ratingsAverage_waitAvg))
+          let submitting_rating = await ratingData.addRating(xss(req.params.id), Number(xss(req.body.ratingsAverage_overallAvg)), Number(xss(req.body.ratingsAverage_crowdednessAvg)), Number(xss(req.body.ratingsAverage_cleanlinessAvg)), Number(xss(req.body.ratingsAverage_priceAvg)), xss(req.session.user.id), Number(xss(req.body.ratingsAverage_waitAvg)))
         }
 
 
@@ -326,8 +326,8 @@ router
 
         const user = await userData.getUserById(comment.userId);
         comment.user = {
-          firstName: user.firstName,
-          lastName: user.lastName,
+          firstName: xss(user.firstName),
+          lastName: xss(user.lastName),
         };
         return comment;
       }));
@@ -390,18 +390,18 @@ router
     let bar = await barData.getBarById(req.params.id)
 
     res.render('updateBar', {
-      id: req.params.id,
+      id: xss(req.params.id),
       title: 'Update Listing',
-      name: bar.name,
-      image: bar.picture,
-      barAddress: bar.location,
-      description: bar.description
+      name: xss(bar.name),
+      image: xss(bar.picture),
+      barAddress: xss(bar.location),
+      description: xss(bar.description)
     })
   })
   .post(async (req, res) => {
     let update = req.body;
-    let id = req.params.id;
-    let oldBar = await barData.getBarById(req.params.id);
+    let id = xss(req.params.id);
+    let oldBar = await barData.getBarById(id);
 
     let saveComments = xss(oldBar.comments);
     let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
@@ -419,16 +419,16 @@ router
       const updateImage = helpers.checkString(xss(update.updateImage), 'barPicture');
 
       let updated = {
-        name: updateName,
-        location: updateAddress,
-        description: updateDesc,
-        comments: saveComments,
+        name: xss(updateName),
+        location: xss(updateAddress),
+        description: xss(updateDesc),
+        comments: xss(saveComments),
         ratingsAverage: {
-          overallAvg: saveOverall,
-          crowdednessAvg: saveCrowd,
-          cleanlinessAvg: saveClean,
-          priceAvg: savePrice,
-          waittimeAvg: saveWait
+          overallAvg: xss(saveOverall),
+          crowdednessAvg: xss(saveCrowd),
+          cleanlinessAvg: xss(saveClean),
+          priceAvg: xss(savePrice),
+          waittimeAvg: xss(saveWait)
         },
         picture: updateImage
       };

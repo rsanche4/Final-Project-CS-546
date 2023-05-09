@@ -64,11 +64,11 @@ let exportedMethods = {
         let currPriceAvg = theBar.ratingsAverage.priceAvg;
         let currWA = theBar.ratingsAverage.waittimeAvg;
         
-        let newOverallAvg = Math.floor(((currOA*totalBarRatings) + overall)/(totalBarRatings + 1));
-        let newCrowdednessAvg = Math.floor(((currCrA*totalBarRatings) + cleanliness)/(totalBarRatings + 1));
-        let newCleanlinessAvg = Math.floor(((currClA*totalBarRatings) + crowdedness)/(totalBarRatings + 1));
-        let newPriceAvg = Math.floor(((currPriceAvg*totalBarRatings) + overall)/(totalBarRatings + 1));
-        let newWaittimeAvg = Math.floor(((currWA*totalBarRatings) + waittime)/(totalBarRatings + 1));
+        let newOverallAvg = Math.floor(((currOA*(totalBarRatings - 1)) + overall)/(totalBarRatings));
+        let newCrowdednessAvg = Math.floor(((currCrA*(totalBarRatings - 1)) + crowdedness)/(totalBarRatings));
+        let newCleanlinessAvg = Math.floor(((currClA*(totalBarRatings - 1)) + cleanliness)/(totalBarRatings));
+        let newPriceAvg = Math.floor(((currPriceAvg*(totalBarRatings - 1)) + price)/(totalBarRatings));
+        let newWaittimeAvg = Math.floor(((currWA*(totalBarRatings - 1)) + waittime)/(totalBarRatings));
 
         console.log(`bid: ${barId} bn: ${theBar.name} \nnoa: ${newOverallAvg}, ncra: ${newCrowdednessAvg}, ncla: ${newCleanlinessAvg}, npa: ${newPriceAvg}`);
         await bars.updateBarPatch(barId,{
