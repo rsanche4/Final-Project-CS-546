@@ -53,7 +53,7 @@ router.route('/homepage').get(async (req, res) => {
 
     featured_bars = featured_bars.sort(helpers.compare_relevance_score);
 
-    featured_bars = featured_bars.slice(0, 20)
+    featured_bars = featured_bars.slice(0, 10)
 
     res.render('homepage', {
       featBars: featured_bars
