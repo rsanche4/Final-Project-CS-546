@@ -81,15 +81,15 @@ let exportedMethods = {
             );
         }
         */
-        if(!updatedBar.ratingsAverage){
-            updatedBar.ratingsAverage = {
-                overallAvg: 0,
-                crowdednessAvg: 0,
-                cleanlinessAvg: 0,
-                priceAvg: 0,
-                waittimeAvg: 0
-            };
-        } // THIS ELSE STATEMENT WASNT WORKING BECAUSE DUH THERE IS NO FUNCTION WITH THAT NAME. SRLY GUYS? WHO WROTE THIS. IMMA BODYLSAM YOU
+        // if(!updatedBar.ratingsAverage){
+        //     updatedBar.ratingsAverage = {
+        //         overallAvg: 0,
+        //         crowdednessAvg: 0,
+        //         cleanlinessAvg: 0,
+        //         priceAvg: 0,
+        //         waittimeAvg: 0
+        //     };
+        // } // THIS ELSE STATEMENT WASNT WORKING BECAUSE DUH THERE IS NO FUNCTION WITH THAT NAME. SRLY GUYS? WHO WROTE THIS. IMMA BODYLSAM YOU
         // else{
             
         //     updatedBar.ratingsAverage = helpers.ratingsAverage(

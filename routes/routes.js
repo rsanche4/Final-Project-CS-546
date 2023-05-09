@@ -391,11 +391,14 @@ router
   .post(async (req, res) => {
     let update = req.body;
     let id = req.params.id;
-    // let oldBar = await barData.getBarById(req.params.id);
+    let oldBar = await barData.getBarById(req.params.id);
 
-    // let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
-    // let saveCrowd = xss(oldBar.ratingsAverage.crowdednessAvg);
-    // let saveClean = xss(oldBar.ratingsAverage.priceAvg)
+    let saveComments = xss(oldBar.comments);
+    let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
+    let saveCrowd = xss(oldBar.ratingsAverage.crowdednessAvg);
+    let saveClean = xss(oldBar.ratingsAverage.cleanlinessAvg);
+    let savePrice = xss(oldBar.ratingsAverage.priceAvg);
+    let saveWait = xss(oldBar.ratingsAverage.waittimeAvg);
 
     try {
 
@@ -409,13 +412,13 @@ router
         name: updateName,
         location: updateAddress,
         description: updateDesc,
-        comments: [],
+        comments: saveComments,
         ratingsAverage: {
-          overallAvg: 0,
-          crowdednessAvg: 0,
-          cleanlinessAvg: 0,
-          priceAvg: 0,
-          waittimeAvg: 0
+          overallAvg: saveOverall,
+          crowdednessAvg: saveCrowd,
+          cleanlinessAvg: saveClean,
+          priceAvg: savePrice,
+          waittimeAvg: saveWait
         },
         picture: updateImage
       };
