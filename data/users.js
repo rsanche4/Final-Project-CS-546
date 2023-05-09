@@ -21,7 +21,7 @@ export const createUser = async (
     }
     role = role.toLowerCase()
     const userCollection = await users();
-    const emailExists = await userCollection.findOne({ emailAddress: emailAddress });
+    const emailExists = await userCollection.findOne({ email: emailAddress });
     if (emailExists) {
         throw new Error(`Email: ${emailAddress} already exists.`)
     }
