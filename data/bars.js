@@ -107,7 +107,7 @@ let exportedMethods = {
                 `Error: Update failed, could not find a bar with id of ${id}`
             ];
         }
-        return await updateInfo.value;
+        return updateInfo.value;
     }
 };
 

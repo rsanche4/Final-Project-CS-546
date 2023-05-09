@@ -401,14 +401,14 @@ router
   .post(async (req, res) => {
     let update = req.body;
     let id = xss(req.params.id);
-    let oldBar = await barData.getBarById(id);
+    // let oldBar = await barData.getBarById(id);
 
-    let saveComments = xss(oldBar.comments);
-    let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
-    let saveCrowd = xss(oldBar.ratingsAverage.crowdednessAvg);
-    let saveClean = xss(oldBar.ratingsAverage.cleanlinessAvg);
-    let savePrice = xss(oldBar.ratingsAverage.priceAvg);
-    let saveWait = xss(oldBar.ratingsAverage.waittimeAvg);
+    // let saveComments = xss(oldBar.comments);
+    // let saveOverall = xss(oldBar.ratingsAverage.overallAvg);
+    // let saveCrowd = xss(oldBar.ratingsAverage.crowdednessAvg);
+    // let saveClean = xss(oldBar.ratingsAverage.cleanlinessAvg);
+    // let savePrice = xss(oldBar.ratingsAverage.priceAvg);
+    // let saveWait = xss(oldBar.ratingsAverage.waittimeAvg);
 
     try {
 
@@ -422,15 +422,15 @@ router
         name: xss(updateName),
         location: xss(updateAddress),
         description: xss(updateDesc),
-        comments: xss(saveComments),
-        ratingsAverage: {
-          overallAvg: xss(saveOverall),
-          crowdednessAvg: xss(saveCrowd),
-          cleanlinessAvg: xss(saveClean),
-          priceAvg: xss(savePrice),
-          waittimeAvg: xss(saveWait)
-        },
-        picture: updateImage
+        // comments: xss(saveComments),
+        // ratingsAverage: {
+        //   overallAvg: xss(saveOverall),
+        //   crowdednessAvg: xss(saveCrowd),
+        //   cleanlinessAvg: xss(saveClean),
+        //   priceAvg: xss(savePrice),
+        //   waittimeAvg: xss(saveWait)
+        // },
+        picture: xss(updateImage)
       };
       const updateBar = await barData.updateBarPatch(id, updated);
       res.redirect('/searchbars/' + id);
