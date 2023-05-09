@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 import { barData, ratingData } from '../data/index.js';
 import userData from '../data/users.js';
 
-import { getCommentsByBarID, addComment, updateComment, updateCommentPatch } from "../data/comments.js";
+import { getCommentsByBarID, addComment, updateComment, updateCommentPatch, removeComment } from "../data/comments.js";
 import xss from 'xss';
 
 const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
@@ -476,6 +476,22 @@ router
   })
   .post(async (req, res) => {
     try {
+      let commentId = [];
+      let ratingId = [];
+      let delComments = await getCommentsByBarID(req.params.id);
+      let delRatings = await ratingData.getRatingsByBar(req.params.id);
+      delComments.forEach(element => {
+        commentId.push(element._id.toString());
+      });
+      let deleting_bar_comments = commentId.forEach(async (element) => {
+        await removeComment(element);
+      });
+      delRatings.forEach(element => {
+        ratingId.push(element._id.toString());
+      });
+      let deleting_bar_ratings = ratingId.forEach(async (element) => {
+        await ratingData.removeRating(element);
+      });
       let deleting_bar = await barData.removeBar(req.params.id)
       res.redirect('/searchbars')
     } catch (e) {
