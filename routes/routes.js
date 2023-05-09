@@ -56,6 +56,7 @@ router.route('/homepage').get(async (req, res) => {
     featured_bars = featured_bars.slice(0, 10)
 
     res.render('homepage', {
+      title: 'HOBOKEN BAR REVIEW WEBSITE',
       featBars: featured_bars
     });
   } catch (e) {
@@ -75,6 +76,7 @@ router
       }
 
       res.render('searchBars', {
+        title: 'Search All Bar Listings',
         isAdmin: admin,
         allBars: allBars
       });
@@ -89,12 +91,14 @@ router
     // Not implemented
     if (!req.body.searchVenueTerm) {
       res.status(400).render('error', {
+        title: 'Error Page',
         message: 'Error 400: User did not input any text.'
       })
       return
     }
     if (req.body.searchVenueTerm.trim().length === 0) {
       res.status(400).render('error', {
+        title: 'Error Page',
         message: 'Error 400: User did not input any text.',
       })
       return
@@ -114,11 +118,13 @@ router
 
       if (found_matching_bars.length > 0) {
         res.render('searchBars', {
+          title: 'Search All Bar Listings',
           allBars: found_matching_bars,
           NotFoundMessage: ""
         });
       } else {
         res.render('searchBars', {
+          title: 'Search All Bar Listings',
           allBars: found_matching_bars,
           NotFoundMessage: "Could not find any matching bars."
         });
@@ -128,6 +134,7 @@ router
     } catch (e) {
       console.log(e)
       res.status(500).render('error', {
+        title: 'Error Page',
         message: 'Error 500: Something went wrong.'
       })
     }
@@ -135,11 +142,13 @@ router
 
 router.route('/error').get(async (req, res) => { // regular error. not much new here
   res.status(403).render('error', {
+    title: 'Error Page',
     message: 'You have to be logged in to submit ratings info...'
   });
 }).post(async (req, res) => {
   // Not implemented
   res.status(403).render('error', {
+    title: 'Error Page',
     message: 'ERROR 403'
   });
 });
@@ -191,7 +200,7 @@ router
       console.log("t2: " + bar.ratingsAverage);
       console.log("t1: " + bar["ratingsAverage"]);
       res.render('barpage', {
-
+        title: bar.name,
         id: xss(req.params.id),
         name: bar.name,
         picture: bar.picture,
@@ -286,6 +295,7 @@ router
 
     } catch (e) {
       res.status(403).render('error', {
+        title: 'Error Page',
         message: e
       });
     }
