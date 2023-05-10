@@ -6,8 +6,9 @@ import userData from '../data/users.js';
 
 import { getCommentsByBarID, addComment, updateComment, updateCommentPatch, removeComment } from "../data/comments.js";
 import xss from 'xss';
-
-const apikey = 'AIzaSyC1fYCYIWM0-rXLca-5H3QtBsAccEtYvCE';
+import dotenv from 'dotenv';
+dotenv.config();
+const apikey = process.env.apikey;
 
 const router = Router();
 
